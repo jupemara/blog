@@ -1,22 +1,30 @@
 {
   "name": "blog",
   "version": "0.0.1",
-  "description": "my blog",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jupemara/blog.git"
-  },
+  "private": true,
+  "description": "blog",
+  "author": "jupemara",
+  "license": "MIT",
   "keywords": [
     "blog"
   ],
-  "author": "jupemara",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jupemara/blog/issues"
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "typecheck": "tsc --noEmit"
   },
-  "homepage": "https://github.com/jupemara/blog#readme"
+  "dependencies": {
+    "gatsby": "^4.11.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "typescript": "^4.6.3"
+  }
 }
