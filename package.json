@@ -1,0 +1,22 @@
+{
+  "name": "blog",
+  "version": "0.0.1",
+  "description": "my blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jupemara/blog.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "jupemara",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jupemara/blog/issues"
+  },
+  "homepage": "https://github.com/jupemara/blog#readme"
+}
