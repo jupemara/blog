@@ -2,23 +2,22 @@ import fs from 'fs';
 import path from 'path';
 import { GetStaticPaths, GetStaticPathsResult } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { articleDir } from './const';
 
-const dir = 'src/articles';
-
-export interface WithId extends ParsedUrlQuery {
+export interface ArticlePath extends ParsedUrlQuery {
   id: string;
 }
 
 export const getStaticPaths: GetStaticPaths = async (): Promise<
-  GetStaticPathsResult<WithId>
+  GetStaticPathsResult<ArticlePath>
 > => {
-  const vs = await fs.promises.readdir(path.join(process.cwd(), dir));
+  const vs = await fs.promises.readdir(path.join(process.cwd(), articleDir));
   return {
     paths: extractPaths(vs).map((v) => {
       return {
         params: {
           id: v,
-        } as WithId,
+        },
       };
     }),
     fallback: false,
@@ -28,9 +27,6 @@ export const getStaticPaths: GetStaticPaths = async (): Promise<
 function extractPaths(paths: string[]): string[] {
   const regex = new RegExp(/.mdx?$/);
   return paths.map((v) => {
-    if (!!regex.exec(v)) {
-      return v.replace(regex, '');
-    }
-    return v;
+    return v.replace(regex, '');
   });
 }
