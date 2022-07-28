@@ -9,7 +9,6 @@ const withMDX = require('@next/mdx')({
   options: {
     remarkPlugins: [],
     rehypePlugins: [],
-    providerImportSource: '@mdx-js/react',
   },
 });
 
