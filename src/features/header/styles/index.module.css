@@ -1,0 +1,5 @@
+.header {
+  min-height: 324px;
+  background-image: url('./header-background-1.5x.png');
+  background-repeat: repeat-x;
+}
