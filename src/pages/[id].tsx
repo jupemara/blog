@@ -1,13 +1,18 @@
 import { NextPage } from 'next';
 import { MDXRemote } from 'next-mdx-remote';
+import { ArticleImage } from '../features/articles/components/ArticleImage';
 import { ArticleProps } from '../lib/repository/articles/get-static-props';
+
+const components = {
+  img: ArticleImage,
+};
 
 const Article: NextPage<ArticleProps> = (props: ArticleProps) => {
   return (
     <main>
       <div>{props.meta.title}</div>
       <div></div>
-      <MDXRemote {...props.content}></MDXRemote>
+      <MDXRemote {...props.content} components={components}></MDXRemote>
     </main>
   );
 };
