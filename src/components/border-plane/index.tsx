@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import styles from './styles/index.module.css';
 
 export const BorderPlane: FC = (props) => {
@@ -9,13 +9,16 @@ export const BorderPlane: FC = (props) => {
   );
 };
 
-export const BorderPlaneWithMother2Font: FC = (props) => {
+type Props = {
+  children: ReactNode;
+};
+
+export const BorderPlaneWithMother2Font: FC<Props> = ({ children }) => {
   return (
     <div className={styles['border-plane']}>
-      <div
-        className={`${styles['border-inner']} ${styles['mother2-font']}`}
-        {...props}
-      ></div>
+      <div className={`${styles['border-inner']} ${styles['mother2-font']}`}>
+        {children}
+      </div>
     </div>
   );
 };
