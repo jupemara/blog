@@ -12,10 +12,10 @@ when other content will appear, will named "content-container" or "body-containe
   width: 960px;
   margin-left: auto;
   margin-right: auto;
-  border-width: 32px 32px;
+  border-width: 32px 34px 32px 32px;
   border-style: solid;
   border-image-source: url('./pc-border.png');
-  border-image-slice: 32 32 fill;
+  border-image-slice: 32 34 32 32 fill;
   border-image-repeat: repeat;
 }
 .footer {
