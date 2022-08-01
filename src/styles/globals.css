@@ -20,7 +20,12 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    color: black;
+    background: #b0d0b8;
   }
+}
+
+@font-face {
+  font-family: 'MOTHER2';
+  src: url('/fonts/mother2.woff2');
 }

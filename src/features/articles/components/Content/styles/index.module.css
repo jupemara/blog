@@ -1,0 +1,27 @@
+.header {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 82px;
+  background-repeat: repeat-x;
+  background-image: url('./pc-header-background.png');
+}
+/* tentatively named just "container".
+when other content will appear, will named "content-container" or "body-container" like this in the future */
+.container {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  border-width: 32px 34px 32px 32px;
+  border-style: solid;
+  border-image-source: url('./pc-border.png');
+  border-image-slice: 32 34 32 32 fill;
+  border-image-repeat: repeat;
+}
+.footer {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 288px;
+  background-image: url('./pc-footer-background.png');
+}

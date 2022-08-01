@@ -1,0 +1,38 @@
+.header {
+  background-repeat: repeat-x;
+  min-height: 324px;
+  background-image: url('./header-background-2x.png');
+}
+
+.title-outer {
+  background-color: #a0c0a8;
+}
+
+.title {
+  padding-top: 15px;
+  padding-left: 15px;
+  color: white;
+}
+
+@media (max-width: 960px) {
+  .header {
+    min-height: 238px;
+    background-image: url('./header-background-1.5x.png');
+  }
+}
+
+@media (max-width: 520px) {
+  .header {
+    min-height: 194px;
+    background-image: url('./header-background-1.2x.png');
+  }
+  .title-outer {
+    text-align: center;
+  }
+  .title {
+    display: inline-block;
+    padding-top: 10px;
+    padding-left: 0px;
+    padding-bottom: 3px;
+  }
+}
