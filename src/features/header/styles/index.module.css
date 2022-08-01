@@ -1,5 +1,7 @@
 .header {
   background-repeat: repeat-x;
+  min-height: 324px;
+  background-image: url('./header-background-2x.png');
 }
 
 .title-outer {
@@ -10,11 +12,6 @@
   padding-top: 15px;
   padding-left: 15px;
   color: white;
-}
-
-.header {
-  min-height: 324px;
-  background-image: url('./header-background-2x.png');
 }
 
 @media (max-width: 960px) {
