@@ -12,8 +12,10 @@ when other content will appear, will named "content-container" or "body-containe
 .container {
   width: 960px;
   font-size: 16px;
+  line-height: 1.8;
   margin-left: auto;
   margin-right: auto;
+  padding: 0px 40px 0px;
   border-width: 32px 34px 32px 32px;
   border-style: solid;
   border-image-source: url('./pc-border.png');
@@ -21,6 +23,36 @@ when other content will appear, will named "content-container" or "body-containe
   border-image-repeat: repeat;
   background-color: #a0c0a8;
 }
+
+.container h1 {
+  font-size: 2.441rem;
+  padding-bottom: 16px;
+  font-weight: bold;
+}
+
+.container h2 {
+  font-size: 1.953rem;
+  padding: 8px 0px;
+  font-weight: bold;
+}
+
+.container h3 {
+  font-size: 1.563rem;
+  padding: 4px 0px;
+  font-weight: bold;
+}
+
+.container h4 {
+  font-size: 1.25rem;
+  padding: 2px 0px;
+  font-weight: bold;
+}
+
+.container h5 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
 .footer {
   width: 960px;
   margin-left: auto;
@@ -29,6 +61,7 @@ when other content will appear, will named "content-container" or "body-containe
   background-color: #a0c0a8;
   background-image: url('./footer-background-2x.png');
 }
+
 @media (max-width: 960px) {
   .header {
     width: 100%;
@@ -62,5 +95,22 @@ when other content will appear, will named "content-container" or "body-containe
     width: 100%;
     min-height: 174px;
     background-image: url('footer-background-1.2x.png');
+  }
+  .container h1 {
+    font-size: 1.953rem;
+  }
+
+  .container h2 {
+    font-size: 1.563rem;
+  }
+
+  .container h3 {
+    font-size: 1.25rem;
+  }
+  .container h4 {
+    font-size: 1rem;
+  }
+  .container h5 {
+    font-size: 1rem;
   }
 }
