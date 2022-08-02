@@ -42,7 +42,7 @@ when other content will appear, will named "content-container" or "body-containe
   .footer {
     width: 100%;
     min-height: 218px;
-    background-image: url('footter-background-1.5x.png');
+    background-image: url('footer-background-1.5x.png');
   }
 }
 
