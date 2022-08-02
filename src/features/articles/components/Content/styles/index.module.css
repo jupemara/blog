@@ -3,8 +3,9 @@
   margin-left: auto;
   margin-right: auto;
   min-height: 82px;
+  background-color: #a0c0a8;
   background-repeat: repeat-x;
-  background-image: url('./pc-header-background.png');
+  background-image: url('./header-background-2x.png');
 }
 /* tentatively named just "container".
 when other content will appear, will named "content-container" or "body-container" like this in the future */
@@ -17,11 +18,47 @@ when other content will appear, will named "content-container" or "body-containe
   border-image-source: url('./pc-border.png');
   border-image-slice: 32 34 32 32 fill;
   border-image-repeat: repeat;
+  background-color: #a0c0a8;
 }
 .footer {
   width: 960px;
   margin-left: auto;
   margin-right: auto;
   min-height: 288px;
-  background-image: url('./pc-footer-background.png');
+  background-color: #a0c0a8;
+  background-image: url('./footer-background-2x.png');
+}
+
+@media (max-width: 960px) {
+  .header {
+    width: 100%;
+    min-height: 62px;
+    background-image: url('header-background-1.5x.png');
+  }
+  .container {
+    width: 100%;
+    border: none;
+  }
+  .footer {
+    width: 100%;
+    min-height: 218px;
+    background-image: url('footer-background-1.5x.png');
+  }
+}
+
+@media (max-width: 520px) {
+  .header {
+    width: 100%;
+    min-height: 49px;
+    background-image: url('header-background-1.2x.png');
+  }
+  .container {
+    width: 100%;
+    border: none;
+  }
+  .footer {
+    width: 100%;
+    min-height: 174px;
+    background-image: url('footer-background-1.2x.png');
+  }
 }
