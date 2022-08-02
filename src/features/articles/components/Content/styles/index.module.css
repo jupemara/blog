@@ -16,17 +16,18 @@ when other content will appear, will named "content-container" or "body-containe
   margin-left: auto;
   margin-right: auto;
   padding: 0px 40px 0px;
-  border-width: 32px 34px 32px 32px;
+  border-width: 0px 48px 0px 62px;
   border-style: solid;
-  border-image-source: url('./pc-border.png');
-  border-image-slice: 32 34 32 32 fill;
-  border-image-repeat: repeat;
+  border-image-source: url('./border-side-2x-v2.png');
+  border-image-slice: 186 48 0 62;
+  /* border-image-outset: 0px 100px; */
+  border-image-repeat: round;
   background-color: #a0c0a8;
 }
 
 .container h1 {
   font-size: 2.441rem;
-  padding-bottom: 16px;
+  padding: 16px 0px;
   font-weight: bold;
 }
 
