@@ -21,6 +21,9 @@ export const getStaticProps = async (
     { content, data } = matter(raw),
     mdx = await serialize(content, {
       scope: data,
+      mdxOptions: {
+        rehypePlugins: [require('@mapbox/rehype-prism')],
+      },
     });
   return {
     props: {
