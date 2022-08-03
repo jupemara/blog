@@ -9,8 +9,10 @@
   background-image: url('./header-background-2x.png');
 }
 .object {
+  text-align: right;
   padding: 0px 40px 0px 0px;
   bottom: 5px;
+  position: relative;
 }
 
 .content-outer {
@@ -100,10 +102,8 @@
     background-image: url('header-background-1.2x.png');
   }
   .object {
-    text-align: right;
     padding: 0px 10px 0px 0px;
     bottom: 40px;
-    position: relative;
   }
   .content-outer {
     width: 100%;
