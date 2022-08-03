@@ -9,7 +9,7 @@
 }
 /* tentatively named just "container".
 when other content will appear, will named "content-container" or "body-container" like this in the future */
-.container {
+.content-outer {
   width: 960px;
   font-size: 16px;
   line-height: 1.8;
@@ -25,31 +25,35 @@ when other content will appear, will named "content-container" or "body-containe
   background-color: #a0c0a8;
 }
 
-.container h1 {
+.content {
+  width: 800px;
+}
+
+.content h1 {
   font-size: 2.441rem;
   padding: 16px 0px;
   font-weight: bold;
 }
 
-.container h2 {
+.content h2 {
   font-size: 1.953rem;
   padding: 8px 0px;
   font-weight: bold;
 }
 
-.container h3 {
+.content h3 {
   font-size: 1.563rem;
   padding: 4px 0px;
   font-weight: bold;
 }
 
-.container h4 {
+.content h4 {
   font-size: 1.25rem;
   padding: 2px 0px;
   font-weight: bold;
 }
 
-.container h5 {
+.content h5 {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -69,7 +73,7 @@ when other content will appear, will named "content-container" or "body-containe
     min-height: 62px;
     background-image: url('header-background-1.5x.png');
   }
-  .container {
+  .content-outer {
     width: 100%;
     padding: 30px 40px 40px;
     border: none;
@@ -87,7 +91,7 @@ when other content will appear, will named "content-container" or "body-containe
     min-height: 49px;
     background-image: url('header-background-1.2x.png');
   }
-  .container {
+  .content-outer {
     width: 100%;
     padding: 30px 20px 40px;
     border: none;
@@ -97,21 +101,21 @@ when other content will appear, will named "content-container" or "body-containe
     min-height: 174px;
     background-image: url('footer-background-1.2x.png');
   }
-  .container h1 {
+  .content h1 {
     font-size: 1.953rem;
   }
 
-  .container h2 {
+  .content h2 {
     font-size: 1.563rem;
   }
 
-  .container h3 {
+  .content h3 {
     font-size: 1.25rem;
   }
-  .container h4 {
+  .content h4 {
     font-size: 1rem;
   }
-  .container h5 {
+  .content h5 {
     font-size: 1rem;
   }
 }
