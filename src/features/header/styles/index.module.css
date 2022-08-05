@@ -7,7 +7,7 @@
 
 .title-outer {
   background-image: url('header-top-2x.png');
-  height: 100px;
+  height: 110px;
   background-color: #a0c0a8;
   background-repeat: repeat-x;
 }
@@ -34,7 +34,7 @@
 
 .warp {
   position: absolute;
-  margin-top: 13px;
+  margin-top: 12px;
   width: 64px;
   height: 96px;
   right: 50%;
@@ -63,12 +63,12 @@
   }
   .title-outer {
     background-image: url('header-top-1.2x.png');
-    height: 70px;
+    height: 81px;
   }
   .space-tunnel {
     margin: 0px;
-    width: 36px;
-    height: 65px;
+    width: 58px;
+    height: 78px;
     left: 0%;
     transform: none;
   }
