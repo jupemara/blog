@@ -1,8 +1,8 @@
 .header-bottom {
-  background-repeat: repeat-x;
   min-height: 277px;
   margin-bottom: 10px;
-  background-image: url('header-background-2x.png');
+  background-image: url('header-bottom-2x.png');
+  background-repeat: repeat-x;
 }
 
 .title-outer {
@@ -45,9 +45,10 @@
 }
 
 @media (max-width: 960px) {
-  .header {
+  .header-bottom {
     min-height: 238px;
-    background-image: url('./header-background-1.5x.png');
+    margin-bottom: 0px;
+    background-image: url('./header-bottom-1.5x.png');
   }
   .title-outer {
     background-image: url('header-top-1.5x.png');
@@ -55,9 +56,10 @@
 }
 
 @media (max-width: 520px) {
-  .header {
+  .header-bottom {
     min-height: 194px;
-    background-image: url('./header-background-1.2x.png');
+    margin-bottom: 0px;
+    background-image: url('./header-bottom-1.2x.png');
   }
   .title-outer {
     background-image: url('header-top-1.2x.png');
