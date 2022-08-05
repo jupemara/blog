@@ -2,11 +2,10 @@
   background-repeat: repeat-x;
   min-height: 277px;
   margin-bottom: 10px;
-  background-image: url('./header-background-2x.png');
+  background-image: url('header-background-2x.png');
 }
 
 .title-outer {
-  text-align: center;
   background-image: url('header-top-2x.png');
   height: 100px;
   background-color: #a0c0a8;
@@ -14,34 +13,35 @@
 }
 
 .space-tunnel {
-  display: inline-block;
-  vertical-align: top;
+  position: absolute;
   margin-top: 8px;
-  margin-right: 20px;
   width: 84px;
   height: 90px;
+  left: 50%;
+  transform: translateX(-270px);
   background-image: url('./space-tunnel-2x.png');
   background-repeat: no-repeat;
   background-position: bottom right;
 }
 
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  color: white;
+}
+
 .warp {
-  display: inline-block;
-  vertical-align: top;
+  position: absolute;
   margin-top: 13px;
-  margin-left: 20px;
   width: 64px;
   height: 96px;
+  right: 50%;
+  transform: translateX(250px);
   background-image: url('./warp-2x.png');
   background-repeat: no-repeat;
   background-position: bottom left;
-}
-
-.title {
-  display: inline-block;
-  vertical-align: top;
-  margin-top: 20px;
-  color: white;
 }
 
 @media (max-width: 960px) {
@@ -52,12 +52,6 @@
   .title-outer {
     background-image: url('header-top-1.5x.png');
   }
-  .space-tunnel {
-    margin-right: 15px;
-  }
-  .warp {
-    margin-left: 15px;
-  }
 }
 
 @media (max-width: 520px) {
@@ -66,7 +60,6 @@
     background-image: url('./header-background-1.2x.png');
   }
   .title-outer {
-    text-align: left;
     background-image: url('header-top-1.2x.png');
     height: 70px;
   }
@@ -74,19 +67,18 @@
     margin: 0px;
     width: 36px;
     height: 65px;
+    left: 0%;
+    transform: none;
   }
   .title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 8px 0px;
+    margin-top: 8px;
     font-size: 0.8em;
   }
   .warp {
-    position: absolute;
     margin: 0px;
     width: 34px;
     top: -15px;
     right: 0%;
+    transform: none;
   }
 }
