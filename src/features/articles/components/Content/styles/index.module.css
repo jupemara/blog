@@ -17,8 +17,6 @@
 
 .content-outer {
   width: 960px;
-  font-size: 16px;
-  line-height: 1.8;
   margin-left: auto;
   margin-right: auto;
   padding: 0px 40px 0px;
@@ -32,8 +30,10 @@
 }
 
 .content {
-  width: 800px;
+  width: 780px;
   padding-bottom: 50px;
+  font-size: 16px;
+  line-height: 1.8;
 }
 
 .content h1 {
@@ -63,6 +63,20 @@
 .content h5 {
   font-size: 1rem;
   font-weight: bold;
+}
+
+.content li {
+  list-style-type: circle;
+  list-style-position: inside;
+}
+
+.content code:not([class]) {
+  color: #dfe0e2;
+  background-color: #1e1e1e;
+  padding: 0.2rem;
+  border-radius: 3px;
+  font-family: Menlo, Monaco, Consolas, 'Andale Mono', 'Ubuntu Mono',
+    'Courier New', monospace;
 }
 
 .footer {
