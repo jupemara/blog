@@ -6,19 +6,13 @@ type Props = {
 };
 
 export const BorderPlane: FC<Props> = ({ children }) => {
-  return (
-    <div className={styles['border-plane']}>
-      <div className={styles['border-inner']}>{children}</div>
-    </div>
-  );
+  return <div className={styles['border-plane']}>{children}</div>;
 };
 
 export const BorderPlaneWithMother2Font: FC<Props> = ({ children }) => {
   return (
-    <div className={styles['border-plane']}>
-      <div className={`${styles['border-inner']} ${styles['mother2-font']}`}>
-        {children}
-      </div>
+    <div className={`${styles['border-plane']} ${styles['mother2-font']}`}>
+      {children}
     </div>
   );
 };

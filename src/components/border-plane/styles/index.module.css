@@ -1,7 +1,9 @@
 .border-plane {
+  background-color: black;
   border: 16px solid transparent;
   width: fit-content;
   border-image: url('./border-plane-4x.png') 32 fill;
+  border-radius: 32px;
 }
 
 .mother2-font {
