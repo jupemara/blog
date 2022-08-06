@@ -80,7 +80,9 @@
 }
 
 .content pre {
-  border-radius: 5px;
+  border: 16px solid transparent;
+  border-image: url('./border-plane-4x.png') 32 fill;
+  border-radius: 32px;
 }
 
 .footer {
