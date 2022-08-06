@@ -71,12 +71,16 @@
 }
 
 .content code:not([class]) {
-  color: #dfe0e2;
+  color: #a0c0a8;
   background-color: #1e1e1e;
   padding: 0.2rem;
   border-radius: 3px;
   font-family: Menlo, Monaco, Consolas, 'Andale Mono', 'Ubuntu Mono',
     'Courier New', monospace;
+}
+
+.content pre {
+  border-radius: 5px;
 }
 
 .footer {
