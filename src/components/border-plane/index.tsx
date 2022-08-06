@@ -7,9 +7,9 @@ type Props = {
 
 export const BorderPlane: FC<Props> = ({ children }) => {
   return (
-    <span className={styles['border-plane']}>
-      <span className={styles['border-inner']}>{children}</span>
-    </span>
+    <div className={styles['border-plane']}>
+      <div className={styles['border-inner']}>{children}</div>
+    </div>
   );
 };
 
