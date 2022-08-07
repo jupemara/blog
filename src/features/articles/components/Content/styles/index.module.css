@@ -8,6 +8,7 @@
   background-position: left bottom;
   background-image: url('./header-background-2x.png');
 }
+
 .object {
   text-align: right;
   padding: 0px 40px 0px 0px;
@@ -80,7 +81,9 @@
 }
 
 .content pre {
-  border-radius: 5px;
+  border: 16px solid transparent;
+  border-image: url('./border-plane-4x.png') 32 fill;
+  border-radius: 32px;
 }
 
 .footer {
