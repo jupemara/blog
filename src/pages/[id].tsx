@@ -6,20 +6,17 @@ import {
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { ArticleContent } from '../features/articles/components/Content';
-import { getAllPosts, Post } from '../lib/get-all-articles';
+import { getAllPosts } from '../lib/get-all-articles';
 import { MDX } from '../lib/mdx';
 
-type PostPropsV2 = InferGetStaticPropsType<typeof getStaticProps>;
-type PostProps = {
-  props: Post;
-};
+type PostProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 // TODO: fixup
 interface PostPath extends ParsedUrlQuery {
   id: string; // TODO: use slug as id
 }
 
-const Post: NextPage<PostPropsV2> = (props: PostPropsV2) => {
+const Post: NextPage<PostProps> = (props: PostProps) => {
   return (
     <>
       <div>{props.meta.slug}</div>
@@ -46,9 +43,7 @@ export async function getStaticPaths(): Promise<
   };
 }
 
-export async function getStaticProps(
-  context: GetStaticPropsContext<PostPath>,
-): Promise<PostProps> {
+export async function getStaticProps(context: GetStaticPropsContext<PostPath>) {
   const post = getAllPosts().find((v) => {
     return v.meta.slug === context.params?.id;
   });
