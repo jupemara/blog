@@ -26,7 +26,7 @@ export function getAllPosts(): Post[] {
       return {
         meta: data,
         mdx: content,
-        dir: path.resolve(v),
+        dir: path.dirname(v),
       };
     });
 }
