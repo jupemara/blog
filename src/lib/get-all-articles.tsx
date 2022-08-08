@@ -1,4 +1,6 @@
+// TODO: rename module name to "blog" or something like that?
 import matter from 'gray-matter';
+import path from 'path';
 
 const contexts = require.context('../posts', true); // TODO: contexts => context
 
@@ -7,6 +9,7 @@ export type Post = {
     [k: string]: string; // TODO: define matter type
   };
   mdx: string;
+  dir: string;
 };
 
 let posts: Post[] | null = null;
@@ -23,6 +26,7 @@ export function getAllPosts(): Post[] {
       return {
         meta: data,
         mdx: content,
+        dir: path.resolve(v),
       };
     });
 }

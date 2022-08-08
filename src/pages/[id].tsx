@@ -5,28 +5,35 @@ import {
   NextPage,
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { getAllPaths, getAllPosts, Post } from '../lib/get-all-articles';
-import { ArticleProps } from '../lib/repository/articles/get-static-props';
+import { getAllPosts, Post } from '../lib/get-all-articles';
+import { MDX } from '../lib/mdx';
 
 type PostPropsV2 = InferGetStaticPropsType<typeof getStaticProps>;
 type PostProps = {
   props: Post;
 };
 
+// TODO: fixup
 interface PostPath extends ParsedUrlQuery {
-  // TODO: fixup
-  id: string;
+  id: string; // TODO: use slug as id
 }
 
 const Post: NextPage<PostPropsV2> = (props: PostPropsV2) => {
-  return <div>{props.meta.slug}</div>;
+  return (
+    <>
+      <div>{props.meta.slug}</div>
+      <div>{props.meta.title}</div>
+      <div>{props.dir}</div>
+      <div>{props.mdx}</div>
+      <MDX dir={props.dir} mdx={props.mdx}></MDX>
+    </>
+  );
 };
 
 export async function getStaticPaths(): Promise<
   GetStaticPathsResult<PostPath>
 > {
   const posts = getAllPosts();
-  console.log(posts[0].meta.slug);
   return {
     paths: posts.map((v) => {
       return {
@@ -39,22 +46,19 @@ export async function getStaticPaths(): Promise<
   };
 }
 
-export async function getStaticProps({
-  params,
-}: {
-  params: PostPath;
-}): Promise<PostProps> {
+export async function getStaticProps(
+  context: GetStaticPropsContext<PostPath>,
+): Promise<PostProps> {
   const post = getAllPosts().find((v) => {
-    return v.meta.slug === params.id;
+    return v.meta.slug === context.params?.id;
   });
   if (!post) {
-    throw new Error(`cloudn't find specified post. slug: "${params.id}"`);
+    throw new Error(
+      `cloudn't find specified post. slug: "${context.params?.id}"`,
+    );
   }
   return {
-    props: {
-      meta: post.meta,
-      mdx: post.mdx,
-    },
+    props: post,
   };
 }
 
