@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Processor, unified } from 'unified';
-import React, { FC } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { context } from './context';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
@@ -16,10 +16,7 @@ const MDXContext = React.createContext<{
   ctx: __WebpackModuleApi.RequireContext;
 } | null>(null);
 
-export const MDX: FC<{
-  dir: string;
-  mdx: string;
-}> = (props) => {
+export const MDX = (props: { dir: string; mdx: string }): JSX.Element => {
   return (
     <MDXContext.Provider
       value={{
@@ -48,12 +45,12 @@ function processor(): Processor {
     });
 }
 
-const MDXImage: FC = (
+const MDXImage = (
   props: React.DetailedHTMLProps<
     React.ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
   >,
-) => {
+): JSX.Element => {
   const mdxctx = React.useContext(MDXContext);
   if (!mdxctx) {
     throw new Error('MDXContext is null');
