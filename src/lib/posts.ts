@@ -1,4 +1,3 @@
-// TODO: rename module name to "blog" or something like that?
 import { context } from './context';
 import matter from 'gray-matter';
 import path from 'path';
