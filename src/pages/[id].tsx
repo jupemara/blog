@@ -19,7 +19,6 @@ const Post: NextPage<PostProps> = (props: PostProps) => {
     <>
       <Header></Header>
       <main>
-        <div>{props.meta.slug}</div>
         <ArticleContent title={props.meta.title}>
           <MDX dir={props.dir} mdx={props.mdx}></MDX>
         </ArticleContent>
