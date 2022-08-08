@@ -30,12 +30,3 @@ export function getAllPosts(): Post[] {
       };
     });
 }
-
-export function getAllPaths(): string[] {
-  if (!posts) {
-    return [];
-  }
-  return posts?.map((v) => {
-    return v.meta.slug;
-  });
-}

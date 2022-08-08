@@ -6,7 +6,7 @@ import {
 } from 'next';
 import { ArticleContent } from '../features/articles/components/Content';
 import { MDX } from '../lib/mdx';
-import { getAllPosts } from '../lib/get-all-articles';
+import { getAllPosts } from '../lib/posts';
 import { Header } from '../features/header';
 
 type PostProps = InferGetStaticPropsType<typeof getStaticProps>;
