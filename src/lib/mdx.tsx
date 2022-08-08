@@ -1,4 +1,8 @@
 import React, { FC } from 'react';
+import { Processor, unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeReact from 'rehype-react';
 
 // TODO: when "require.context" was called twice use cache ?? or not ??
 const ctx = require.context('../posts', true);
@@ -21,8 +25,14 @@ export const MDX: FC<{
         dir: props.dir,
       }}
     >
-      test contents だよ
+      {processor().processSync(props.mdx).result}
       {/* TODO: remark + reshype */}
     </MDXContext.Provider>
   );
 };
+
+function processor(): Processor {
+  return unified().use(remarkParse).use(remarkRehype).use(rehypeReact, {
+    createElement: React.createElement,
+  });
+}

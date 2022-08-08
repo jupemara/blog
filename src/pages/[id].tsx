@@ -5,6 +5,7 @@ import {
   NextPage,
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { ArticleContent } from '../features/articles/components/Content';
 import { getAllPosts, Post } from '../lib/get-all-articles';
 import { MDX } from '../lib/mdx';
 
@@ -22,10 +23,9 @@ const Post: NextPage<PostPropsV2> = (props: PostPropsV2) => {
   return (
     <>
       <div>{props.meta.slug}</div>
-      <div>{props.meta.title}</div>
-      <div>{props.dir}</div>
-      <div>{props.mdx}</div>
-      <MDX dir={props.dir} mdx={props.mdx}></MDX>
+      <ArticleContent title={props.meta.title}>
+        <MDX dir={props.dir} mdx={props.mdx}></MDX>
+      </ArticleContent>
     </>
   );
 };
