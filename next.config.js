@@ -3,13 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-};
-const withMDX = require('@next/mdx')({
-  extension: /.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.mdx?$/,
+      use: 'raw-loader',
+    });
+    return config;
   },
-});
-
-module.exports = withMDX(nextConfig);
+};
+module.exports = nextConfig;
