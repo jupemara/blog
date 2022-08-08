@@ -3,8 +3,8 @@ import { Processor, unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
+import rehypePrism from '@mapbox/rehype-prism';
 import Image from 'next/image';
-import { isContext } from 'vm';
 import path from 'path';
 
 // TODO: when "require.context" was called twice use cache ?? or not ??
@@ -38,6 +38,7 @@ function processor(): Processor {
   return unified()
     .use(remarkParse)
     .use(remarkRehype)
+    .use(rehypePrism)
     .use(rehypeReact, {
       createElement: React.createElement,
       components: {
