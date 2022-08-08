@@ -9,6 +9,7 @@ import rehypeReact from 'rehype-react';
 import rehypeHighlight from 'rehype-highlight';
 import Image from 'next/image';
 import path from 'path';
+import { context } from './context';
 
 // TODO: when "require.context" was called twice use cache ?? or not ??
 const ctx = require.context('../posts', true);
@@ -20,19 +21,16 @@ const MDXContext = React.createContext<{
 
 export const MDX: FC<{
   dir: string;
-  // context: __WebpackModuleApi.RequireContext;
   mdx: string;
 }> = (props) => {
   return (
     <MDXContext.Provider
       value={{
-        // context: props.context,
-        ctx: ctx,
+        ctx: context(),
         dir: props.dir,
       }}
     >
       {processor().processSync(props.mdx).result as JSX.Element}
-      {/* TODO: remark + reshype */}
     </MDXContext.Provider>
   );
 };
