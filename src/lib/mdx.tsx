@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
 import { Processor, unified } from 'unified';
 import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import remarkMdx from 'remark-mdx';
+import remarkEmoji from 'remark-emoji';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
-import rehypePrism from '@mapbox/rehype-prism';
+import rehypeHighlight from 'rehype-highlight';
 import Image from 'next/image';
 import path from 'path';
 
@@ -37,8 +40,11 @@ export const MDX: FC<{
 function processor(): Processor {
   return unified()
     .use(remarkParse)
+    .use(remarkStringify)
+    .use(remarkMdx)
     .use(remarkRehype)
-    .use(rehypePrism)
+    .use(remarkEmoji)
+    .use(rehypeHighlight)
     .use(rehypeReact, {
       createElement: React.createElement,
       components: {
