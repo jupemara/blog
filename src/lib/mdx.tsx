@@ -1,5 +1,7 @@
-import React, { FC } from 'react';
+import Image from 'next/image';
 import { Processor, unified } from 'unified';
+import React, { FC } from 'react';
+import { context } from './context';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import remarkMdx from 'remark-mdx';
@@ -7,12 +9,7 @@ import remarkEmoji from 'remark-emoji';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
 import rehypeHighlight from 'rehype-highlight';
-import Image from 'next/image';
 import path from 'path';
-import { context } from './context';
-
-// TODO: when "require.context" was called twice use cache ?? or not ??
-const ctx = require.context('../posts', true);
 
 const MDXContext = React.createContext<{
   dir: string;
