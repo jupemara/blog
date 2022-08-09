@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { MDXRemote } from 'next-mdx-remote';
-import { ArticleImage } from '../features/articles/components/ArticleImage';
-import { ArticleContent } from '../features/articles/components/Content';
+import { ArticleImage } from '../features/posts/components/ArticleImage';
+import { ArticleContent } from '../features/posts/components/Content';
 import { Header } from '../features/header';
 import { ArticleProps } from '../lib/repository/articles/get-static-props';
 

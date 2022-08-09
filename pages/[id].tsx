@@ -4,7 +4,7 @@ import {
   InferGetStaticPropsType,
   NextPage,
 } from 'next';
-import { ArticleContent } from '../features/articles/components/Content';
+import { ArticleContent } from '../features/posts/components/Content';
 import { MDX } from '../lib/mdx';
 import { getAllPosts } from '../lib/posts';
 import { Header } from '../features/header';
