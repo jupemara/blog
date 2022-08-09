@@ -19,10 +19,7 @@ const Post: NextPage<PostProps> = (props: PostProps) => {
   return (
     <div>
       <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale = 1, shrink-to-fit = no"
-        />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="theme-color" content="#ed1c23" />
       </Head>
       <Header></Header>
