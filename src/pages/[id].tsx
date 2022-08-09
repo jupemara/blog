@@ -8,6 +8,7 @@ import { ArticleContent } from '../features/articles/components/Content';
 import { MDX } from '../lib/mdx';
 import { getAllPosts } from '../lib/posts';
 import { Header } from '../features/header';
+import Head from 'next/head';
 
 type PostProps = InferGetStaticPropsType<typeof getStaticProps>;
 type P = {
@@ -16,14 +17,18 @@ type P = {
 
 const Post: NextPage<PostProps> = (props: PostProps) => {
   return (
-    <>
+    <div>
+      <Head>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#ed1c23" />
+      </Head>
       <Header></Header>
       <main>
         <ArticleContent title={props.meta.title}>
           <MDX dir={props.dir} mdx={props.mdx}></MDX>
         </ArticleContent>
       </main>
-    </>
+    </div>
   );
 };
 
