@@ -32,7 +32,6 @@
 
 .content {
   width: 780px;
-  padding-bottom: 50px;
   font-size: 16px;
   line-height: 1.8;
 }
@@ -96,6 +95,10 @@
   background-image: url('./footer-background-2x.png');
 }
 
+.octobot {
+  text-align: right;
+}
+
 @media (max-width: 960px) {
   .header {
     width: 100%;
@@ -104,7 +107,7 @@
   }
   .content-outer {
     width: 100%;
-    padding: 30px 40px 40px;
+    padding: 30px 40px 0px;
     border: none;
   }
   .content {
@@ -129,7 +132,7 @@
   }
   .content-outer {
     width: 100%;
-    padding: 30px 20px 40px;
+    padding: 30px 20px 0px;
     border: none;
   }
   .content {

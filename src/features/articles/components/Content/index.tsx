@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { FC, ReactNode } from 'react';
+import { Octobot } from '../../../../components/Octobot';
 import styles from './styles/index.module.css';
 
 type Props = {
@@ -24,6 +25,9 @@ export const ArticleContent: FC<Props> = ({ title, children }) => {
         <div className={styles.content}>
           <h1>{title}</h1>
           {children}
+          <div className={styles.octobot}>
+            <Octobot></Octobot>
+          </div>
         </div>
       </div>
       <div className={styles.footer}></div>
