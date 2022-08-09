@@ -68,7 +68,6 @@
 
 .content li {
   list-style-type: circle;
-  list-style-position: inside;
 }
 
 .content code:not([class]) {
