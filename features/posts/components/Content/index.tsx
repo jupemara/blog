@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode;
 };
 
-export const ArticleContent: FC<Props> = ({ title, children }) => {
+export const Content: FC<Props> = ({ title, children }) => {
   return (
     <>
       <div className={styles.header}>

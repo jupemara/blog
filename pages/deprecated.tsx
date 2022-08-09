@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { MDXRemote } from 'next-mdx-remote';
 import { ArticleImage } from '../features/posts/components/ArticleImage';
-import { ArticleContent } from '../features/posts/components/Content';
+import { Content } from '../features/posts/components/Content';
 import { Header } from '../features/header';
 import { ArticleProps } from '../lib/repository/articles/get-static-props';
 
@@ -14,9 +14,9 @@ const Article: NextPage<ArticleProps> = (props: ArticleProps) => {
     <>
       <Header></Header>
       <main>
-        <ArticleContent title={props.meta.title}>
+        <Content title={props.meta.title}>
           <MDXRemote {...props.content} components={components}></MDXRemote>
-        </ArticleContent>
+        </Content>
       </main>
     </>
   );
