@@ -4,7 +4,7 @@ import {
   InferGetStaticPropsType,
   NextPage,
 } from 'next';
-import { ArticleContent } from '../features/articles/components/Content';
+import { Content } from '../features/posts/components/Content';
 import { MDX } from '../lib/mdx';
 import { getAllPosts } from '../lib/posts';
 import { Header } from '../features/header';
@@ -24,9 +24,9 @@ const Post: NextPage<PostProps> = (props: PostProps) => {
       </Head>
       <Header></Header>
       <main>
-        <ArticleContent title={props.meta.title}>
+        <Content title={props.meta.title}>
           <MDX dir={props.dir} mdx={props.mdx}></MDX>
-        </ArticleContent>
+        </Content>
       </main>
     </div>
   );
