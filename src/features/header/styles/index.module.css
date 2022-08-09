@@ -32,6 +32,18 @@
   color: white;
 }
 
+.title a,
+.title a:hover,
+.title a:visited {
+  color: inherit;
+}
+
+.title a,
+.title a:hover,
+.title a:visited {
+  text-decoration: none;
+}
+
 .warp {
   position: absolute;
   margin-top: 12px;
