@@ -1,11 +1,21 @@
 import { context } from './context';
 import matter from 'gray-matter';
 import path from 'path';
+import { z } from 'zod';
+
+const Meta = z.object({
+  slug: z.string(),
+  title: z.string(),
+  publishedAt: z.string(),
+  updatedAt: z.string(),
+  tags: z.array(z.string()).default([]),
+  thumbnail: z.string().default('/posts/default-thumbnail.png'),
+});
+
+type Meta = z.infer<typeof Meta>;
 
 export type Post = {
-  meta: {
-    [k: string]: string; // TODO: define matter type
-  };
+  meta: Meta;
   mdx: string;
   dir: string;
 };
@@ -23,7 +33,7 @@ export function getAllPosts(): Post[] {
     .map((v: string) => {
       const { data, content } = matter(ctx(v).default);
       return {
-        meta: data,
+        meta: Meta.parse(data),
         mdx: content,
         dir: path.dirname(v),
       };
