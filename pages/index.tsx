@@ -1,10 +1,13 @@
-import type { NextPage } from 'next';
+import type { InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Header } from '../features/header';
-import styles from '../styles/Home.module.css';
+import { Grid } from '../features/Home/components/Grid';
+import { Island } from '../features/Home/components/Island';
 
-const Home: NextPage = () => {
+type PostsProps = InferGetStaticPropsType<typeof getStaticProps>;
+
+const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
   return (
     <div>
       <Head>
@@ -13,61 +16,72 @@ const Home: NextPage = () => {
         <meta name="theme-color" content="#ed1c23" />
       </Head>
       <Header></Header>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+      <main>
+        <Grid>
+          {posts.map((v, i) => {
+            return (
+              <Island
+                key={i}
+                title={v.title}
+                lastUpdatedAt={v.lastUpdatedAt}
+                thumbnail={v.thumbnail}
+              ></Island>
+            );
+          })}
+        </Grid>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   );
+};
+
+export const getStaticProps = () => {
+  const posts = [
+    {
+      title: 'nextjs で画像を相対パスで読み込ませたかった',
+      lastUpdatedAt: '2022-08-09T00:00:00+09:00',
+      thumbnail: '',
+    },
+    {
+      title: 'JLCPCB に3Dプリンタ出した話',
+      lastUpdatedAt: '2022-07-25T00:00:00+09:00',
+      thumbnail: '',
+    },
+    {
+      title: 'DMM make に3Dプリンタ出した話',
+      lastUpdatedAt: '2022-06-25T00:00:00+09:00',
+      thumbnail: '',
+    },
+    {
+      title: 'planck endgame: eyes を作って使ってる話',
+      lastUpdatedAt: '2022-05-11T00:00:00+09:00',
+      thumbnail: '',
+    },
+    {
+      title: 'そろそろiPad mini を買いに行きましょう',
+      lastUpdatedAt: '2022-04-11T00:00:00+09:00',
+      thumbnail: '',
+    },
+    {
+      title: 'Cloud Functions tips for go113',
+      lastUpdatedAt: '2021-09-11T00:00:00+09:00',
+      thumbnail: '',
+    },
+    {
+      title: 'HEXGEARS の PBT keycaps が夏っぽくて超おしゃれ',
+      lastUpdatedAt: '2021-06-25T00:00:00+09:00',
+      thumbnail: '',
+    },
+    {
+      title: 'keebstuff の黒LEMOが届いたぜ!!',
+      lastUpdatedAt: '2020-06-25T00:00:00+09:00',
+      thumbnail: '',
+    },
+  ];
+  return {
+    props: {
+      posts,
+    },
+  };
 };
 
 export default Home;
