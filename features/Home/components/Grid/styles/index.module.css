@@ -1,10 +1,11 @@
 .container {
-  width: 1200px;
+  width: 1280px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .header {
+  /* TODO: separate header left and right or apply more fittable header image */
   background-image: url('./grid-header-2x.png');
   height: 82px;
   background-repeat: repeat-x;
@@ -12,7 +13,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 280px);
+  grid-template-columns: repeat(4, 290px);
   border-width: 0px 214px 0px 64px;
   border-style: solid;
   border-image-source: url('./border-side-2x.png');
@@ -22,8 +23,15 @@
 }
 
 .footer {
+  position: relative;
   background-image: url('./grid-footer-2x.png');
   height: 272px;
+}
+
+.octobot {
+  position: absolute;
+  top: -52px;
+  left: 94%;
 }
 
 @media (max-width: 1280px) {

@@ -1,31 +1,73 @@
 .island {
   margin-left: 8px; /* TODO: specify tablet and phone size */
   margin-right: 8px;
+  margin-bottom: 32px; /* TODO: adjust margin-bottom with warp-object */
   image-rendering: pixelated;
 }
 
-.header {
-  background-image: url('./island-header-pc-2x.png');
-  background-repeat: repeat-x;
-  height: 42px;
+.title-container {
+  padding: 8px 0px 8px;
+}
+
+.warp-container {
+  position: relative;
+}
+
+.warp {
+}
+
+.warp-ball {
+  z-index: 3;
+  position: absolute;
+  top: -46px;
+  width: 64px;
+  height: 80px;
+  background-image: url('./warp-ball-2x.png');
+  background-repeat: no-repeat;
+}
+
+.title {
+  z-index: 2;
+  position: relative;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.warp-shadow {
+  z-index: 1;
+  position: absolute;
+  top: calc(-46px + 80px);
+  width: 64px;
+  height: 16px;
+  background-image: url('./warp-shadow-2x.png');
+  background-repeat: no-repeat;
+}
+
+.short {
+  z-index: 2;
+  position: relative;
 }
 
 .main {
-  border-width: 0px 48px 0px 32px;
+  /* border-width: 0px 48px 0px 32px;
   border-style: solid;
   border-color: black;
   border-image-source: url('./island-border-pc-2x.png');
   border-image-slice: 0 48 0 32 fill;
-  border-image-repeat: round;
+  border-image-repeat: round; */
 }
 
 .footer {
-  background-image: url('./island-footer-pc-2x.png');
-  background-repeat: repeat-x;
-  height: 260px;
+  /* background-image: url('./island-footer-pc-2x.png');
+  background-repeat: repeat-x; */
+}
+
+.published-date-container {
 }
 
 .published-date {
-  font-size: 10px;
+  text-align: right;
+  padding: 8px 0px 8px;
+  font-size: 9px;
   font-family: MOTHER2;
 }
