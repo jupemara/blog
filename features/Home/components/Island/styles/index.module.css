@@ -1,3 +1,30 @@
+.island {
+  margin-left: 8px; /* TODO: specify tablet and phone size */
+  margin-right: 8px;
+  image-rendering: pixelated;
+}
+
+.header {
+  background-image: url('./island-header-pc-2x.png');
+  background-repeat: repeat-x;
+  height: 42px;
+}
+
+.main {
+  border-width: 0px 48px 0px 32px;
+  border-style: solid;
+  border-color: black;
+  border-image-source: url('./island-border-pc-2x.png');
+  border-image-slice: 0 48 0 32 fill;
+  border-image-repeat: round;
+}
+
+.footer {
+  background-image: url('./island-footer-pc-2x.png');
+  background-repeat: repeat-x;
+  height: 260px;
+}
+
 .published-date {
   font-size: 10px;
   font-family: MOTHER2;
