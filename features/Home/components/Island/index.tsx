@@ -22,20 +22,22 @@ export const Island = ({
       <div className={styles.main}>
         <div className={styles['title-container']}>
           <div className={styles['warp-container']}>
-            <div
-              className={`${styles.warp} ${styles['warp-ball']}`}
-              style={{
-                top: `${top}px`,
-                left: `${left}px`,
-              }}
-            ></div>
-            <div
-              className={`${styles.warp} ${styles['warp-shadow']}`}
-              style={{
-                top: `${top + offset}px`,
-                left: `${left}px`,
-              }}
-            ></div>
+            <a href="https://example.com">
+              <div
+                className={`${styles.warp} ${styles['warp-ball']}`}
+                style={{
+                  top: `${top}px`,
+                  left: `${left}px`,
+                }}
+              ></div>
+              <div
+                className={`${styles.warp} ${styles['warp-shadow']}`}
+                style={{
+                  top: `${top + offset}px`,
+                  left: `${left}px`,
+                }}
+              ></div>
+            </a>
             <h2 className={styles.title}>{title}</h2>
             <p className={styles.short}>
               コレはショートテキストでテスト的に書いています.
