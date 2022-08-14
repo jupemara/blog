@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Processor, unified } from 'unified';
-import React, { FC, ReactElement } from 'react';
+import React from 'react';
 import { context } from './context';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
