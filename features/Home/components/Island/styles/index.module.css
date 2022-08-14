@@ -56,6 +56,12 @@
   font-family: MOTHER2;
 }
 
+@media (max-width: 960px) {
+  .island {
+    margin: 24px 8px;
+  }
+}
+
 @media (max-width: 520px) {
   .island {
     margin: 24px 8px;

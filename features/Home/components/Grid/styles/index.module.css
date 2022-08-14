@@ -56,6 +56,8 @@
   }
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    padding-left: 16px;
+    padding-right: 16px;
     border: none;
     border-image: none;
   }
