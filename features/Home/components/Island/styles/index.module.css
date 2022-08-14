@@ -1,7 +1,5 @@
 .island {
-  margin-left: 8px; /* TODO: specify tablet and phone size */
-  margin-right: 8px;
-  margin-bottom: 20px;
+  margin: 0px 8px 20px;
   image-rendering: pixelated;
 }
 
@@ -56,4 +54,10 @@
   padding-top: 8px;
   font-size: 9px;
   font-family: MOTHER2;
+}
+
+@media (max-width: 520px) {
+  .island {
+    margin: 24px 8px;
+  }
 }
