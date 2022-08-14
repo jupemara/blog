@@ -1,12 +1,8 @@
 .island {
   margin-left: 8px; /* TODO: specify tablet and phone size */
   margin-right: 8px;
-  margin-bottom: 32px; /* TODO: adjust margin-bottom with warp-object */
+  margin-bottom: 20px;
   image-rendering: pixelated;
-}
-
-.title-container {
-  padding: 8px 0px 8px;
 }
 
 .warp-container {
@@ -14,6 +10,7 @@
 }
 
 .warp {
+  background-repeat: no-repeat;
 }
 
 .warp-ball {
@@ -23,14 +20,14 @@
   width: 64px;
   height: 80px;
   background-image: url('./warp-ball-2x.png');
-  background-repeat: no-repeat;
 }
 
 .title {
   z-index: 2;
   position: relative;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
+  margin-bottom: 4px;
 }
 
 .warp-shadow {
@@ -40,7 +37,6 @@
   width: 64px;
   height: 16px;
   background-image: url('./warp-shadow-2x.png');
-  background-repeat: no-repeat;
 }
 
 .short {
@@ -48,26 +44,16 @@
   position: relative;
 }
 
-.main {
-  /* border-width: 0px 48px 0px 32px;
-  border-style: solid;
-  border-color: black;
-  border-image-source: url('./island-border-pc-2x.png');
-  border-image-slice: 0 48 0 32 fill;
-  border-image-repeat: round; */
-}
-
-.footer {
-  /* background-image: url('./island-footer-pc-2x.png');
-  background-repeat: repeat-x; */
-}
-
-.published-date-container {
+.short::first-letter {
+  font-size: 48px;
+  float: left;
+  padding-right: 8px;
+  line-height: 1;
+  font-weight: bold;
 }
 
 .published-date {
-  text-align: right;
-  padding: 8px 0px 8px;
+  padding-top: 8px;
   font-size: 9px;
   font-family: MOTHER2;
 }
