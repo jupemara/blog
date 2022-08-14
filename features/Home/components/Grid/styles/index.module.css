@@ -6,10 +6,8 @@
 
 .header {
   background-image: url('./grid-header-2x.png');
-  width: 1280px;
   height: 98px;
   background-repeat: repeat-x;
-  float: left;
 }
 
 .grid {
@@ -31,8 +29,8 @@
 
 .octobot {
   position: absolute;
-  top: -52px;
-  left: 94%;
+  top: -64px;
+  left: 93%;
 }
 
 @media (max-width: 1280px) {
@@ -42,19 +40,41 @@
   .grid {
     grid-template-columns: repeat(3, 280px);
   }
+  .octobot {
+    left: 91%;
+  }
 }
 
 @media (max-width: 960px) {
   .container {
     width: 100%;
+    background-color: #a0c0a8;
+  }
+  .header {
+    background-image: url('./grid-header-1.5x.png');
+    height: 74px;
   }
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    border: none;
+    border-image: none;
+  }
+  .footer {
+    background-image: url('./grid-footer-1.5x.png');
+    height: 204px;
   }
 }
 
 @media (max-width: 520px) {
   .grid {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .header {
+    background-image: url('./grid-header-1.2x.png');
+    height: 59px;
+  }
+  .footer {
+    background-image: url('./grid-footer-1.2x.png');
+    height: 163px;
   }
 }
