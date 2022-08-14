@@ -1,6 +1,5 @@
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { Header } from '../features/header';
 import { Grid } from '../features/Home/components/Grid';
 import { Island } from '../features/Home/components/Island';
@@ -24,7 +23,6 @@ const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
                 key={i}
                 title={v.title}
                 lastUpdatedAt={v.lastUpdatedAt}
-                thumbnail={v.thumbnail}
               ></Island>
             );
           })}
@@ -39,7 +37,7 @@ export const getStaticProps = () => {
     {
       title: 'nextjs で画像を相対パスで読み込ませたかった',
       lastUpdatedAt: '2022-08-09',
-      thumbnail: '',
+      thumbnail: 'コレはショートテキストでテスト的に書いています',
     },
     {
       title: 'JLCPCB に3Dプリンタ出した話',

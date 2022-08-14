@@ -1,22 +1,25 @@
+import { random } from '../../../../lib/utils/random-range';
+// TODO: use path alias
 import styles from './styles/index.module.css';
 
 type IslandProps = {
   title: string;
   lastUpdatedAt: string;
-  thumbnail: string;
   top: number;
   left: number;
 };
 
+type IslandPropsV2 = {
+  title: string;
+  lastUpdatedAt: string;
+};
+
 // TODO: define props
-export const Island = ({
-  title,
-  lastUpdatedAt,
-  thumbnail,
-  top,
-  left,
-}: IslandProps) => {
-  const offset = 80;
+export const Island = ({ title, lastUpdatedAt }: IslandPropsV2) => {
+  const offset = 80,
+    // TODO: re-consider random range
+    top = random(-30, 100),
+    left = random(-50, 100);
   return (
     <div className={styles.island}>
       <div className={styles.main}>
