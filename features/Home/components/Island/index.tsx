@@ -5,17 +5,11 @@ import styles from './styles/index.module.css';
 type IslandProps = {
   title: string;
   lastUpdatedAt: string;
-  top: number;
-  left: number;
-};
-
-type IslandPropsV2 = {
-  title: string;
-  lastUpdatedAt: string;
+  txt: string;
 };
 
 // TODO: define props
-export const Island = ({ title, lastUpdatedAt }: IslandPropsV2) => {
+export const Island = ({ title, lastUpdatedAt, txt }: IslandProps) => {
   const offset = 80,
     // TODO: re-consider random range
     top = random(-30, 100),
@@ -41,12 +35,7 @@ export const Island = ({ title, lastUpdatedAt }: IslandPropsV2) => {
             ></div>
           </a>
           <h2 className={styles.title}>{title}</h2>
-          <p className={styles.short}>
-            NNTレはショートテキストでテスト的に書いています.
-            時々キーボードデザイナーとして仕事をしたいなと思いつつ、フロントエンドとバックエンドでソフトウェアエンジニアをやっています.
-            とはいえ, 日々の生活はそれなりに楽しく,
-            明日もポリカーボネートのトッププレートが届くので最高に楽しみです.
-          </p>
+          <p className={styles.short}>{toShort(txt)}</p>
         </div>
         <div className={styles['published-date']}>{lastUpdatedAt}</div>
       </div>
@@ -54,3 +43,9 @@ export const Island = ({ title, lastUpdatedAt }: IslandPropsV2) => {
     </div>
   );
 };
+
+function toShort(raw: string): string {
+  const length = 140,
+    v = raw.length <= length ? raw : raw.slice(0, length);
+  return v + '...';
+}
