@@ -5,10 +5,11 @@
 }
 
 .header {
-  /* TODO: separate header left and right or apply more fittable header image */
   background-image: url('./grid-header-2x.png');
-  height: 82px;
+  width: 1280px;
+  height: 98px;
   background-repeat: repeat-x;
+  float: left;
 }
 
 .grid {
