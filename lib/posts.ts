@@ -3,7 +3,7 @@ import matter from 'gray-matter';
 import path from 'path';
 import { z } from 'zod';
 import { unified } from 'unified';
-import remarkParse from 'remark-parse/lib';
+import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import strip from 'strip-markdown';
 
