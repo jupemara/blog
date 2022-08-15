@@ -16,7 +16,7 @@ export const Header: FC = (props) => {
               </Link>
             </BorderPlaneWithMother2Font>
           </span>
-          <Link href="/keyboard">
+          <Link href="/kb">
             <a className={styles.warp}></a>
           </Link>
         </div>
