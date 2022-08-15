@@ -11,7 +11,7 @@ type PostsProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
   return (
-    <div>
+    <>
       <Head>
         <title>{config.site}</title>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -37,7 +37,7 @@ const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
           })}
         </Grid>
       </main>
-    </div>
+    </>
   );
 };
 

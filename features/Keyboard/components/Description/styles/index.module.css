@@ -1,0 +1,52 @@
+.container {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.desc {
+  color: white;
+  line-height: 2.2rem;
+  font-family: MOTHER2;
+  padding: 16px;
+}
+
+.kb {
+  width: 960px;
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.photos {
+  display: grid;
+  margin-top: 32px;
+  grid-template-columns: repeat(2, 480px);
+}
+
+.photo-desc {
+  color: white;
+  vertical-align: top;
+  font-size: 9px;
+  font-family: MOTHER2;
+}
+
+.tdb {
+  text-align: center;
+  font-size: 9px;
+  font-family: MOTHER2;
+}
+
+@media (max-width: 960px) {
+  .kb {
+    width: 100%;
+  }
+  .photos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .photos {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
