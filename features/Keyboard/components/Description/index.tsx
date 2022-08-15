@@ -46,13 +46,7 @@ export const Description = (): JSX.Element => {
                 <div key={i}>
                   <BorderLemon>
                     <span className={styles['photo-desc']}>{txt}</span>
-                    <Image
-                      alt={txt}
-                      src={src}
-                      width={480}
-                      height={320}
-                      layout="responsive"
-                    ></Image>
+                    <Image alt={txt} src={src} width={480} height={320}></Image>
                   </BorderLemon>
                 </div>
               );
