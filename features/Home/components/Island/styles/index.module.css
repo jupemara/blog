@@ -1,0 +1,69 @@
+.island {
+  margin: 0px 8px 20px;
+  image-rendering: pixelated;
+}
+
+.warp-container {
+  position: relative;
+}
+
+.warp {
+  background-repeat: no-repeat;
+}
+
+.warp-ball {
+  z-index: 3;
+  position: absolute;
+  top: -46px;
+  width: 64px;
+  height: 80px;
+  background-image: url('./warp-ball-2x.png');
+}
+
+.title {
+  z-index: 2;
+  position: relative;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.warp-shadow {
+  z-index: 1;
+  position: absolute;
+  top: calc(-46px + 80px);
+  width: 64px;
+  height: 16px;
+  background-image: url('./warp-shadow-2x.png');
+}
+
+.short {
+  z-index: 2;
+  position: relative;
+}
+
+.short::first-letter {
+  font-size: 48px;
+  float: left;
+  padding-right: 8px;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.published-date {
+  padding-top: 8px;
+  font-size: 9px;
+  font-family: MOTHER2;
+}
+
+@media (max-width: 960px) {
+  .island {
+    margin: 24px 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .island {
+    margin: 24px 8px;
+  }
+}
