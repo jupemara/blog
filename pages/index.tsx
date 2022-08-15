@@ -25,10 +25,11 @@ const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
       <Header></Header>
       <main>
         <Grid>
-          {posts.map((v, i) => {
+          {posts.map((v) => {
             return (
               <Island
-                key={i}
+                key={v.slug}
+                slug={v.slug}
                 title={v.title}
                 lastUpdatedAt={v.lastUpdatedAt}
                 txt={v.txt}
@@ -47,6 +48,7 @@ export const getStaticProps = () => {
       posts: getAllPosts()
         .map((v) => {
           return {
+            slug: v.meta.slug,
             title: v.meta.title,
             lastUpdatedAt: v.meta.publishedAt,
             txt: v.txt,
