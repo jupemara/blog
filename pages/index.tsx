@@ -5,6 +5,7 @@ import { Header } from '../features/header';
 import { Grid } from '../features/Home/components/Grid';
 import { Island } from '../features/Home/components/Island';
 import { getAllPosts } from 'lib/posts';
+import dayjs from 'dayjs';
 
 type PostsProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -43,13 +44,19 @@ const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
 export const getStaticProps = () => {
   return {
     props: {
-      posts: getAllPosts().map((v) => {
-        return {
-          title: v.meta.title,
-          lastUpdatedAt: v.meta.publishedAt,
-          txt: v.txt,
-        };
-      }),
+      posts: getAllPosts()
+        .map((v) => {
+          return {
+            title: v.meta.title,
+            lastUpdatedAt: v.meta.publishedAt,
+            txt: v.txt,
+          };
+        })
+        .sort((a, b) => {
+          const x = dayjs(a.lastUpdatedAt),
+            y = dayjs(b.lastUpdatedAt);
+          return y.unix() - x.unix();
+        }),
     },
   };
 };

@@ -35,8 +35,8 @@ const Post: NextPage<PostProps> = ({ meta, dir, mdx, txt }: PostProps) => {
         <meta property="article:modified_time" content={meta.updatedAt} />
         <meta property="article:author" content={config.author} />
         <meta property="article:section" content={meta.tags[0]} />
-        {meta.tags.map((v) => {
-          return <meta property="article:tag" content={v} />;
+        {meta.tags.map((v, i) => {
+          return <meta key={i} property="article:tag" content={v} />;
         })}
       </Head>
       <Header></Header>
