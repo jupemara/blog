@@ -5,26 +5,30 @@ import type { AppProps } from 'next/app';
 import Script from 'next/script';
 import { config } from 'lib/config';
 
-function App({ Component, pageProps }: AppProps) {
-  const ga = !!config.gaMeasurementId ? (
-    <>
-      <Script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${config.gaMeasurementId}`}
-      ></Script>
-      <Script id="ga">
-        {`window.dataLayer = window.dataLayer || [];
+function ga(): JSX.Element {
+  if (!!config.gaMeasurementId) {
+    return (
+      <>
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${config.gaMeasurementId}`}
+        ></Script>
+        <Script id="ga">
+          {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${config.gaMeasurementId}');`}
-      </Script>
-    </>
-  ) : (
-    <></>
-  );
+        </Script>
+      </>
+    );
+  }
+  return <></>;
+}
+
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      {ga}
+      {ga()}
       <Component {...pageProps} />
     </>
   );
