@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { FC, ReactNode } from 'react';
-import { Octobot } from '../../../../components/Octobot';
+import { Octobot } from 'components/Octobot';
 import styles from './styles/index.module.css';
 
 type Props = {

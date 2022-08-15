@@ -1,7 +1,6 @@
-// TODO: use path alias
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { random } from '../../../../lib/utils/random-range';
+import { random } from 'lib/utils/random-range';
 import styles from './styles/index.module.css';
 
 type IslandProps = {

@@ -1,9 +1,9 @@
 import { config } from 'lib/config';
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
-import { Header } from '../features/header';
-import { Grid } from '../features/Home/components/Grid';
-import { Island } from '../features/Home/components/Island';
+import { Header } from 'features/header';
+import { Grid } from 'features/Home/components/Grid';
+import { Island } from 'features/Home/components/Island';
 import { getAllPosts } from 'lib/posts';
 import dayjs from 'dayjs';
 

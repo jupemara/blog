@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { Octobot } from '../../../../components/Octobot';
+import { Octobot } from 'components/Octobot';
 import styles from './styles/index.module.css';
 
 export const Grid = (props: PropsWithChildren): JSX.Element => {
