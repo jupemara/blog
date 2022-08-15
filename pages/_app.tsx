@@ -6,10 +6,7 @@ import Script from 'next/script';
 import { config } from 'lib/config';
 
 function App({ Component, pageProps }: AppProps) {
-  if (!config.gaMeasurementId) {
-    return <></>;
-  }
-  return (
+  const ga = !!config.gaMeasurementId ? (
     <>
       <Script
         async
@@ -21,6 +18,13 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${config.gaMeasurementId}');`}
       </Script>
+    </>
+  ) : (
+    <></>
+  );
+  return (
+    <>
+      {ga}
       <Component {...pageProps} />
     </>
   );
