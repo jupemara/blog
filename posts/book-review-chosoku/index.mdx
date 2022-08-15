@@ -1,0 +1,108 @@
+---
+slug: book-review-chosoku
+title: '書評: 超速! Webページ速度改善ガイド - 使いやすいは「速さ」から始まるWEB+DB PRESS'
+publishedAt: '2019-02-09T10:13:57Z'
+updatedAt: '2019-02-09T10:13:57Z'
+tags: [書評, frontend, Web]
+---
+
+実は 2018 年 2 月くらいのフライトの前に買って、30%くらいだけ読んで放置してた超速本ｗ
+ちゃんと読み直しました。
+
+- タイトル: 超速! Web ページ速度改善ガイド - 使いやすいは「速さ」から始まる WEB+DB PRESS
+- 著者: 佐藤歩, 泉水翔吾
+- 総評: 75 点
+- 読書開始: 2019/01/21
+- 読書終了: 2019/02/08
+- リンク: https://amzn.to/2SF8ekk
+
+## TL; DR.
+
+ブラウザアプリケーション(いわゆるページ遷移を伴うもの)にも SPA に対しても、Web パフォーマンス全体の改善から近年の新し目のブラウザ仕様について触れながらどうやってページ表示を速くするかにフォーカスした本。
+lighthouse とか Audits みたいな割とメジャーでトラディショナルなモノから、service worker, cache API と最近のものまで幅広く紹介されてます。
+最近のブラウザ動向に詳しい人はもしかしたら読まなくてもいいかも。
+ただ当たり前でしょみたいに思ってたことを再確認できたりもするので、知識の再認識という意味も含めて僕にとってはとてもよかった。
+
+## よかったとこ
+
+### Performance タブの詳細説明
+
+とにかくこれがやばかった。Performance タブでこんなことできんの!?的なことまで書いてあって、ここを使いこなせば、だいたいの Web サイトはここだけでパフォチューできそうな悪寒。
+例に上げると
+
+- GPU 有効化の範囲
+  - ここからどこに GPU 有効化を当てるかを決めてく
+- ページの FPS 調べるためのリアルタイム GPU meter とまたその見方
+- rendering 中の CPU 使用率と Film Scratch(スクショとりながら時系列で performance が見れる)
+- ヒープの使用量
+- (こっちは console タブやけど)Flash Painting 機能を使うと rendering された時にどこの UI が更新されたかってのを判断できる
+  - 例えば react で不用意にごっそり state を変えてないかとか、state の変化がない時に仮想 DOM 更新してないかとかみながらパフォチューできる
+- call tree を grouping できるので、どの script のどの処理が思いか見れる(例えば 3rd party の広告タグとか)
+
+### クリティカルレンダリングパス
+
+レンダリングツリーできるまでの HTML のパーシング順序、DOM ツリーと CSSOM ツリーはどうやって構築されて、どこがボトルネックになりやすいか。
+ここから派生して、script タグどうやって入れるのがいいか(結局 defer 属性とはなんだったのか的な話にもなるとは思うがｗ)。
+
+### 画像配信のときのネットワーク最適化
+
+gzip 以外の選択肢。
+
+- zopfli
+- brotli
+
+また mozjpeg による画像の圧縮化。
+どういう用途の時にどういう画像形式を使うか、png と gif についての画像フォーマットの説明(簡易やけど、要点を抑えててわかりやすかったです)。
+
+### Passive Event Listener
+
+ref: https://developers.google.com/web/updates/2016/06/passive-event-listeners
+scroll 系のイベント(例えば `touchstart` とか `touchend` とか)を使うとき、scroll に対してなにか新しいインタラクションを起こす時(例には google maps が出てた)、 `Event.preventDefault` を呼び出してた。
+ただし、ブラウザはこの EventListener を登録するとき、preventDefault が呼ばれるかどうかわからんので、実際に listener を動かすしかない。
+この parse の処理がスクロールごとに呼び出されたりするので、scroll 系のイベントハンドラはどうしても scroll junk (ページスクロールのつまり)が起こりやすくなる。
+`Event.preventDefault` を呼び出していないことを明示的に表すための event が passive event lister で、addEventListener 時に passive フラグをくっつけると、scroll junk を軽くすることができる。
+ブラウザ側に `Event.preventDefault` って呼び出してないよーってことを事前に教えてあげるわけですな。
+ちなみに passive = true にして `Event.preventDefault` を呼び出しても無視される。
+
+あ、もち Intersection Observer 使えって話もあると思うけど、Safari やとまだまだ使えないやん??
+
+### Timing API
+
+Timing API についての総まとめ。細かい実践的なコードというよりかは、どのメトリックでどういう値が取れるのかっていう指標。
+そもそもこんな値取れんの!?(Navigation Timing の TCP Connection とかｗ)みたいなのもあったので、それを知れるだけでもパフォーマンス改善につながりそうでよかった。
+
+### Cach-Control ヘッダについて
+
+完璧に理解しているつもりやったけどｗ
+普通に知らん設定とかあってよかったです。
+内容的には超速本と https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching が参考になると思います。
+
+### ツール系
+
+- [lighthouse](https://www.npmjs.com/package/lighthouse)
+- [WebPagetest](https://www.webpagetest.org/)
+  - サイト直接叩くのもいいけど、 [npm module](https://www.npmjs.com/package/webpagetest) があるのでそっち使って定期的にあるいは CI に組み込むべし
+- [PageSpeed Insights](https://github.com/addyosmani/psi/)
+- [mozjpeg](https://github.com/mozilla/mozjpeg)
+- [Guetzli](https://github.com/google/guetzli): google 謹製の画像圧縮ツール
+  - まだまだ評価レヴェルってのが実際のところっぽい: https://qiita.com/yohhoy/items/406af27d4415c7bb6346
+
+## ｴｯそんなん知らんかったは系(細かいの)
+
+- session storage(local storgage の 1 つタブ内のみのやつ(タブ内で有効と言えばわかりやすいかも))と local storage 合わせて Web Storage っていう
+- Network タブで出てくる"Stalled"の意味: proxy への negotiation を含んだ、TCP の接続待機とか実際にリクエストが発生するまでの待ち時間
+- Network タブで shift を押しながらマウスホバーすると、そのリソースの取得が何起因なのかがわかる(script タグから作られて動的に`createElement`されたものなのかとか)
+- Performance ツールのスクショを出しながら timeline に表示する機能は、 **Film Strip** と呼ばれる(名前ついてるの知らんかった)
+- `requestIdleCallback`
+- beforeunload イベントの使いみち: 本書では requestIdleCallback と組み合わせてキャッシュの保存とかやってた
+- メディアクエリは一応知ってるつもりやったけど、 `min-width: 1024px` みたいなことができるの知らんかった
+- Resouce Hints によるクリティカルレンダリングパスの最適化チャンス
+- Long Task: ブラウザのイベントループ中に 50ms 以上の処理がかかるもの
+
+## この本を読んで次に読むべしサイト(独断と偏見による)
+
+- First Meaningful Paint と Rail モデル: https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint
+- Timing API(user): https://w3c.github.io/user-timing/
+  - 任意のタイミングで任意のコードが完了した部分に Timing API の metrics をはやせる
+- Speed Index の見方と意味: https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/metrics/speed-index
+  - 心温かい方が日本語約してくれてた: https://github.com/t32k/webpagetest-doc-ja/blob/master/using-webpagetest/metrics/speed-index/index.md

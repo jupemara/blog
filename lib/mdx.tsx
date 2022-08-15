@@ -10,6 +10,7 @@ import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react';
 import rehypeHighlight from 'rehype-highlight';
 import path from 'path';
+import coffeescript from 'highlight.js/lib/languages/coffeescript';
 
 const MDXContext = React.createContext<{
   dir: string;
@@ -36,7 +37,11 @@ function processor(): Processor {
     .use(remarkMdx)
     .use(remarkRehype)
     .use(remarkEmoji)
-    .use(rehypeHighlight)
+    .use(rehypeHighlight, {
+      languages: {
+        coffeescript: coffeescript,
+      },
+    })
     .use(rehypeReact, {
       createElement: React.createElement,
       components: {

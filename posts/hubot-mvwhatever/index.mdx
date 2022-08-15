@@ -1,0 +1,151 @@
+---
+slug: hubot-mvwhatever
+title: 'hubotでもMVWhateverしようぜ'
+publishedAt: '2016-02-18T12:36:08Z'
+updatedAt: '2016-02-18T12:36:08Z'
+tags: [hubot, architecture]
+---
+
+最初、hubot/scripts ディレクトリの下にこんな罪深いスクリプトを置いていた
+
+````coffeescript
+# Description:
+#   Deploy to specified ElasticBeanstalk environment
+#
+# Commands:
+#   hubot eb deploy to ENVIRONMENT:VERSION
+
+module.exports = (robot) ->
+  robot.respond /eb\s+deploy\s+to\s+([\w_.-]+)\s*:\s*([\w_.-]+)\s*$/i, (msg) ->
+
+    {ElasticBeanstalk} = require 'aws-sdk'
+    eb = new ElasticBeanstalk
+      region: process.env.AWS_DEFAULT_REGION
+
+    params =
+      EnvironmentName: msg.match[1]
+      VersionLabel: msg.match[2]
+    eb.updateEnvironment params, (err, data) ->
+      if err
+        msg.send err.stack
+        return
+
+      msg.send "```#{JSON.stringify data, null, 2}```"
+````
+
+最初はこれでよかった、まぁ、最初は。でもだんだん、ElasticBeanstalk の deploy も hubot でやろうぜとか、github の tag を見るだけじゃなくて tag も打とうぜとかいろんな話が出てきて、`scipts/eb_deploy_to.coffee`とかに書くのに限界が出てきました。それにこれじゃテストできねえよってのもあって、MVWhatever しようぜって話に落ち着きました(たぶん実際にもう少し取り扱う Model が事前に明確であれば、MVWhatever じゃなくてもよかったのかなって思うんですが、ぼくらの hubot の場合は取り扱う Model が Jenkins の job だったり、CloudFront だったり、RDS だったり、ElasticBeanstalk だったりするので、返って Model がかっちりしてなくてよかったなぁってのはあります。)。
+
+っというわけで、MVWatever すると
+
+```bash
+$tree ./
+├── README.md
+├── docker
+│   └── Dockerfile
+├── external-scripts.json
+├── hubot-scripts.json
+├── package.json
+├── scripts
+│   ├── controllers
+│   ├── cron.d
+│   ├── models
+│   ├── roles
+│   └── services
+└── test
+    ├── e2e
+    ├── helper
+    ├── mocha.opts
+    ├── mock
+    ├── regex
+    ├── spec
+    └── stub
+```
+
+MVWhatever しようぜっていうか、ディレクトリ構造をまともに保っておこうぜ的なはなしに近いかもですね。models には、たとえば
+
+```coffeescript
+#models/eb_environment.coffee
+{ElasticBeanstalk} = require 'aws-sdk'
+
+module.exports = class RichElasticBeanstalkEnvironment
+
+  constructor: ({
+    @region
+    @environmentName
+  }) ->
+    @eb = new ElasticBeanstalk
+      region: @region
+
+  deploy: (revision) =>
+    params =
+      EnvironmentName: @environmentName
+      VersionLabel: revision
+
+    return new Promise (resolve, reject) =>
+      @eb.updateEnvironment params (err, data) ->
+        if err
+          reject err
+          return
+
+        resolve data
+```
+
+みたいな。Deploy のメソッドだけを書いておいて、controller 側で
+
+```coffeescript
+#controllers/eb_deploy.coffee
+EBEnv = require '../models/eb_environment'
+#仮にslackに通知するnotify serviceみたいなのがあるとして
+NotifyService = require '../services/slack'
+
+module.exports = class EBDeployController
+
+  constructor: ({
+    @region
+    @environmentName
+    @revision
+  }) ->
+    @region ?= process.env.AWS_DEFAULT_REGION
+    @ebEnv = new EBEnv
+      region: @region
+      environmentName: @environmentName
+    @slack = new NotifyService
+
+  execute:() =>
+    @ebEnv.deploy revision
+      .then (updatedEbDescription) ->
+        @slack.notify "#{@environmentName} deployment is succeeded."
+
+      .catch (err) ->
+        @slack.notify """
+          #{@environmentName} deloyment is faled!
+          #{err.stack}
+        """
+```
+
+みたいな感じで flow 制御と model の各メソッドの責務を分けやすくしてます。あと副次的な効果ですが、model のテストなんかはものによってはかなり楽になるんじゃないですかね。んでもってさいごにこれを
+
+```coffeescript
+# Description:
+#   Deploy to specified ElasticBeanstalk environment
+#
+# Commands:
+#   hubot: eb deploy to ENVIROMENT:REVISION
+
+EbDeployCtrl = require './controllers/eb_deploy'
+
+module.exports = (robot) ->
+  robot.respond /eb\s+deploy\s+to\s+([\w_.-]+)\s*:\s*([\w_.-]+)\s*$/, (msg) ->
+
+    environmentName = msg.match[1]
+    revision = msg.match[2]
+
+    ebDeployCtrl = new EbDeployCtrl
+      environmentName: environmentName
+      revison: revision
+    ebDeployCtrl.execute()
+```
+
+とかやっておけば、正規表現だけのテストもできるし、model だけの unittest も書けるしで、なんかコマンドは吸われてるっぽいけど、ちゃんと実行されてるかどうかわかんねーって現象は防げるんじゃないかなと思います。
+
+ぼくは hubot が結構好きです。ぼくたちの MVWhatever of hubot でした :metal:
