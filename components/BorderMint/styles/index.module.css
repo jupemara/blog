@@ -1,0 +1,4 @@
+.border {
+  border: 16px solid transparent;
+  border-image: url('./border-mint-4x.png') 32 fill;
+}
