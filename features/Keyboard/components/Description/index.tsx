@@ -1,4 +1,4 @@
-import { BorderMint } from 'components/BorderMint';
+import { BorderLemon } from 'components/BorderLemon';
 import Image from 'next/image';
 import styles from './styles/index.module.css';
 
@@ -6,7 +6,7 @@ export const Description = (): JSX.Element => {
   return (
     <>
       <div className={styles.container}>
-        <BorderMint>
+        <BorderLemon>
           <p className={styles.desc}>
             このリンクを みつけられてしまうとは...
             <br />
@@ -18,7 +18,7 @@ export const Description = (): JSX.Element => {
             ガスケットマウントケースを つくっていますO
             <br />
           </p>
-        </BorderMint>
+        </BorderLemon>
       </div>
       <main>
         <div className={styles.kb}>
@@ -44,7 +44,7 @@ export const Description = (): JSX.Element => {
             ].map(({ txt, src }, i) => {
               return (
                 <div key={i}>
-                  <BorderMint>
+                  <BorderLemon>
                     <span className={styles['photo-desc']}>{txt}</span>
                     <Image
                       alt={txt}
@@ -53,7 +53,7 @@ export const Description = (): JSX.Element => {
                       height={320}
                       layout="responsive"
                     ></Image>
-                  </BorderMint>
+                  </BorderLemon>
                 </div>
               );
             })}
