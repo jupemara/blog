@@ -16,7 +16,9 @@ export const Header: FC = (props) => {
               </Link>
             </BorderPlaneWithMother2Font>
           </span>
-          <a href="https://example.com" className={styles.warp}></a>
+          <Link href="/keyboard">
+            <a className={styles.warp}></a>
+          </Link>
         </div>
         <div className={styles['header-bottom']}></div>
       </header>
