@@ -11,7 +11,7 @@ const Keyboard = () => {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="theme-color" content="#ed1c23" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://${config.host}/`} />
+        <meta property="og:url" content={`https://${config.host}/kb`} />
         <meta property="og:description" content="ワイのキーボード置き場" />
         <meta property="og:site_name" content="kb.arashike.com" />
       </Head>
