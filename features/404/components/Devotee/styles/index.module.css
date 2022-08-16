@@ -1,5 +1,23 @@
 .devotee {
-  width: 32px;
-  height: 48px;
-  background-image: url('./devotee-front-2x.png');
+  width: 48px;
+  height: 72px;
+  background-image: url('./devotee-600ms-3x.gif');
+}
+
+.devotee-600 {
+  width: 48px;
+  height: 72px;
+  background-image: url('./devotee-600ms-3x.gif');
+}
+
+.devotee-700 {
+  width: 48px;
+  height: 72px;
+  background-image: url('./devotee-700ms-3x.gif');
+}
+
+.devotee-800 {
+  width: 48px;
+  height: 72px;
+  background-image: url('./devotee-800ms-3x.gif');
 }
