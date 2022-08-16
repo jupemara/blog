@@ -53,3 +53,29 @@
 .title a:visited {
   text-decoration: none;
 }
+
+@media (max-width: 520px) {
+  .left {
+    width: 72px;
+    height: 128px;
+    background-image: url('./header-left-2x.png');
+  }
+
+  .middle {
+    position: relative;
+    z-index: 1;
+    height: 112px;
+    background-image: url('./header-middle-2x.png');
+    background-repeat: repeat-x;
+  }
+
+  .right {
+    width: 72px;
+    height: 128px;
+    background-image: url('./header-right-2x.png');
+  }
+
+  .title {
+    margin-top: 2px;
+  }
+}
