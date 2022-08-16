@@ -1,0 +1,16 @@
+.container {
+  --pading: 72px;
+  display: flex;
+}
+
+.c1 {
+  padding-top: var(--pading);
+}
+
+.O {
+  padding-top: calc(var(--pading) * 2);
+}
+
+.c4 {
+  padding-top: var(--pading);
+}
