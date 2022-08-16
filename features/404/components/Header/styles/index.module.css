@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+}
+
+.left {
+  z-index: 2;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 72px;
+  height: 128px;
+  background-image: url('./header-left-2x.png');
+  background-repeat: repeat-x;
+  float: left;
+}
+
+.middle {
+  position: relative;
+  z-index: 1;
+  height: 112px;
+  background-image: url('./header-middle-2x.png');
+  background-repeat: repeat-x;
+}
+
+.right {
+  position: absolute;
+  z-index: 2;
+  top: 0%;
+  right: 0%;
+  width: 72px;
+  height: 128px;
+  background-image: url('./header-right-2x.png');
+  background-repeat: repeat-x;
+}
+
+.padding {
+  height: 32px;
+  background-image: url('./carpet-2x.png');
+  background-repeat: repeat-x;
+}
