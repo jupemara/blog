@@ -33,6 +33,27 @@
   background-repeat: repeat-x;
 }
 
+.title {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  color: white;
+}
+
+.title a,
+.title a:hover,
+.title a:visited {
+  color: inherit;
+}
+
+.title a,
+.title a:hover,
+.title a:visited {
+  text-decoration: none;
+}
+
 .padding {
   height: 32px;
   background-image: url('./carpet-2x.png');

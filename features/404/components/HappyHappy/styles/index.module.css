@@ -3,3 +3,12 @@
   height: 100vh;
   background-image: url('./carpet-2x.png');
 }
+
+.not-found {
+  width: 736px;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 224px);
+  gap: 32px;
+}

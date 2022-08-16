@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+}
+
+.c1 {
+  padding-top: 96px;
+}
+
+.c2 {
+  padding-top: 48px;
+}
+
+.c6 {
+  padding-top: 48px;
+}
+
+.c7 {
+  padding-top: 96px;
+}

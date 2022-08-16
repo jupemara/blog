@@ -1,0 +1,28 @@
+.container {
+  --devotee-padding: 48px;
+  display: flex;
+}
+
+.c1 {
+  padding-top: calc(var(--devotee-padding) * 4);
+}
+
+.c2 {
+  padding-top: calc(var(--devotee-padding) * 3);
+}
+
+.c3 {
+  padding-top: calc(var(--devotee-padding) * 2);
+}
+
+.c4 {
+  padding-top: var(--devotee-padding);
+}
+
+.c6 {
+  padding-top: calc(var(--devotee-padding) * 4);
+}
+
+.c7 {
+  padding-top: calc(var(--devotee-padding) * 4);
+}
