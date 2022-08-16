@@ -11,7 +11,7 @@ export const Cultist = (): JSX.Element => {
     ],
     [cultist, setCultist] = useState('');
   useEffect(() => {
-    setCultist(cultists[random(0, cultists.length)]);
+    setCultist(cultists[random(0, cultists.length - 1)]);
   });
   return <div className={cultist}></div>;
 };
