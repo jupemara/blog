@@ -17,7 +17,6 @@ export const Header = (): JSX.Element => {
         <div className={styles.middle}></div>
         <span className={styles.right}></span>
       </div>
-      <div className={styles.padding}></div>
     </header>
   );
 };

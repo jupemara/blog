@@ -53,10 +53,3 @@
 .title a:visited {
   text-decoration: none;
 }
-
-.padding {
-  position: static;
-  height: 48px;
-  background-image: url('./carpet-3x.png');
-  background-repeat: repeat-x;
-}
