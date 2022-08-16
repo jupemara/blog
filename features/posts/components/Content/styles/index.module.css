@@ -65,6 +65,14 @@
   font-weight: bold;
 }
 
+.content a {
+  color: #0073bd;
+}
+
+.content a:visited {
+  color: #6f51a1;
+}
+
 .content li {
   list-style-type: circle;
 }
