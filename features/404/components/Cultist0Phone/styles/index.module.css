@@ -1,0 +1,8 @@
+.container {
+  --pading: 48px;
+  display: flex;
+}
+
+.o {
+  padding-top: calc(var(--pading) * 2);
+}
