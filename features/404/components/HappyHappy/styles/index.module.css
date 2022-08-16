@@ -1,14 +1,12 @@
 .container {
   width: 100%;
-  height: 100vh;
-  background-image: url('./carpet-2x.png');
 }
 
 .not-found {
-  width: 736px;
-  margin-left: auto;
-  margin-right: auto;
+  height: calc(100vh - 216px - 216px);
   display: grid;
-  grid-template-columns: repeat(3, 224px);
-  gap: 32px;
+  grid-template-columns: repeat(3, 336px);
+  gap: 48px;
+  justify-content: center;
+  align-items: center;
 }

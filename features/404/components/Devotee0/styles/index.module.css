@@ -1,19 +1,21 @@
 .container {
+  --devotee-padding: 72px;
   display: flex;
 }
 
 .c1 {
-  padding-top: 96px;
+  padding-top: calc(var(--devotee-padding) * 2);
 }
 
 .c2 {
-  padding-top: 48px;
+  padding-top: var(--devotee-padding);
 }
 
 .c6 {
   padding-top: 48px;
+  padding-top: var(--devotee-padding);
 }
 
 .c7 {
-  padding-top: 96px;
+  padding-top: calc(var(--devotee-padding) * 2);
 }

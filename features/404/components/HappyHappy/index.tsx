@@ -1,8 +1,11 @@
+import React from 'react';
 import { Devotee0 } from '../Devotee0';
 import { Devotee4 } from '../Devotee4';
 import styles from './styles/index.module.css';
 
-export const HappyHappy = (): JSX.Element => {
+export const HappyHappy = ({
+  children,
+}: React.PropsWithChildren): JSX.Element => {
   return (
     <main>
       <div className={styles.container}>
@@ -12,6 +15,7 @@ export const HappyHappy = (): JSX.Element => {
           <Devotee4></Devotee4>
         </div>
       </div>
+      {children}
     </main>
   );
 };

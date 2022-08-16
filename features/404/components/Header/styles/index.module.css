@@ -7,9 +7,9 @@
   position: absolute;
   top: 0%;
   left: 0%;
-  width: 72px;
-  height: 128px;
-  background-image: url('./header-left-2x.png');
+  width: 108px;
+  height: 192px;
+  background-image: url('./header-left-3x.png');
   background-repeat: repeat-x;
   float: left;
 }
@@ -17,8 +17,8 @@
 .middle {
   position: relative;
   z-index: 1;
-  height: 112px;
-  background-image: url('./header-middle-2x.png');
+  height: 168px;
+  background-image: url('./header-middle-3x.png');
   background-repeat: repeat-x;
 }
 
@@ -27,9 +27,9 @@
   z-index: 2;
   top: 0%;
   right: 0%;
-  width: 72px;
-  height: 128px;
-  background-image: url('./header-right-2x.png');
+  width: 108px;
+  height: 192px;
+  background-image: url('./header-right-3x.png');
   background-repeat: repeat-x;
 }
 
@@ -55,7 +55,8 @@
 }
 
 .padding {
-  height: 32px;
-  background-image: url('./carpet-2x.png');
+  position: static;
+  height: 48px;
+  background-image: url('./carpet-3x.png');
   background-repeat: repeat-x;
 }

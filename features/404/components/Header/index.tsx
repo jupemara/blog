@@ -1,7 +1,4 @@
-import {
-  BorderPlane,
-  BorderPlaneWithMother2Font,
-} from 'components/border-plane';
+import { BorderPlaneWithMother2Font } from 'components/border-plane';
 import Link from 'next/link';
 import styles from './styles/index.module.css';
 

@@ -1,0 +1,5 @@
+.container {
+  width: 100%;
+  height: calc(100vh - 216px);
+  background-image: url('./carpet-3x.png');
+}
