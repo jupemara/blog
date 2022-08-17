@@ -22,7 +22,7 @@ const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
         <meta property="og:description" content="ワイのブログやで" />
         <meta property="og:site_name" content={config.site} />
       </Head>
-      <Header></Header>
+      <Header />
       <main>
         <Grid>
           {posts.map((v) => {
