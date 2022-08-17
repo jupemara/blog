@@ -21,8 +21,6 @@ const Post: NextPage<PostProps> = ({ meta, dir, mdx, txt }: PostProps) => {
     <div>
       <Head>
         <title>{meta.title}</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="theme-color" content="#ed1c23" />
         <meta property="og:title" content={meta.title} />
         <meta property="og:type" content="article" />
         <meta

@@ -14,8 +14,6 @@ const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
     <>
       <Head>
         <title>{config.site}</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="theme-color" content="#ed1c23" />
         <meta property="og:title" content={config.site} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://${config.host}/`} />
