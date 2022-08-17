@@ -1,3 +1,8 @@
+.container {
+  width: 100%;
+  background: #b0d0b8;
+}
+
 .header {
   width: 960px;
   margin-left: auto;
