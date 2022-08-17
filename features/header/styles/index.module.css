@@ -1,6 +1,5 @@
 .header-bottom {
   min-height: 277px;
-  margin-bottom: 10px;
   background-image: url('header-bottom-2x.png');
   background-repeat: repeat-x;
 }
@@ -58,8 +57,7 @@
 
 @media (max-width: 960px) {
   .header-bottom {
-    min-height: 238px;
-    margin-bottom: 0px;
+    min-height: 209px;
     background-image: url('./header-bottom-1.5x.png');
   }
   .title-outer {
@@ -69,8 +67,7 @@
 
 @media (max-width: 520px) {
   .header-bottom {
-    min-height: 194px;
-    margin-bottom: 0px;
+    min-height: 167px;
     background-image: url('./header-bottom-1.2x.png');
   }
   .title-outer {

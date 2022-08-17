@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import { FC } from 'react';
-import { BorderPlaneWithMother2Font } from '../../components/border-plane';
+import { BorderPlaneWithMother2Font } from 'components/border-plane';
 import styles from './styles/index.module.css';
 
-export const Header: FC = (props) => {
+export const Header = (): JSX.Element => {
   return (
     <>
       <header>

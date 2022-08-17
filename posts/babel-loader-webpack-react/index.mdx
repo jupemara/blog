@@ -1,0 +1,261 @@
+---
+slug: babel-loader-webpack-react
+title: 'babel-loader+webpackでreact開発環境を整える(ただし型チェック...)'
+publishedAt: '2019-02-18T18:28:50Z'
+updatedAt: '2019-02-18T18:28:50Z'
+tags: [babel, webpack, react, frontend]
+---
+
+## TL; DR.
+
+`@babel/preset-typescript` があるので `ts-loader` (webpack の TypeScript 用プラグイン)はいらない子になったと言いたいです。
+ので babel-loader+webpack で TypeScript を使った react の開発環境を作るのが今回のゴールです。
+ネタバレするとトランスパイルは babel-loader+webpack で問題ないですが、型チェックが必要なので tsc で型チェックします。
+
+## Installing
+
+```bash
+$ npm install --save-dev \
+  @babel/cli \
+  @babel/core \
+  @babel/preset-env \
+  @babel/preset-react \
+  @babel/preset-typescript \
+  @types/react \
+  @types/react-dom \
+  babel-loader \
+  typescript \
+  webpack \
+  webpack-cli
+$ npm install --save \
+  react \
+  react-dom
+```
+
+## babel の設定
+
+そもそもコヤツが MicroSoft のブログで publish されたのが 2018 年 8 月 27 日。
+ref: [https://blogs.msdn.microsoft.com/typescript/2018/08/27/typescript-and-babel-7/](https://blogs.msdn.microsoft.com/typescript/2018/08/27/typescript-and-babel-7/)
+
+`@babel/preset-typescript`と`@babel/preset-env`を使えば TypeScript->任意の version の ES に変換してくれます。
+
+```javascript
+// babel.config.js
+'use strict';
+
+const presets = [
+  // 必要に応じて browserslist(対象のブラウザ) とか useBuiltIns (polyfill) の設定を入れていこうな
+  // ['@babel/preset-env', {browserslist: '> 0.25%, not dead'}]的な
+  ['@babel/preset-env'],
+  [
+    '@babel/preset-typescript',
+    {
+      // 強制的にjsxのパースを行うオプション。
+      // e.g: var hoge = <string>fuga; みたいなコードがパースできる
+      isTSX: true,
+      // isTSX: trueにするときは常に必須のオプション
+      allExtensions: true,
+    },
+  ],
+  [
+    '@babel/preset-react',
+    {
+      // WIP: 後半でここ、NODE_ENVで切り替えられるように変更します
+      development: true,
+    },
+  ],
+];
+
+module.exports = { presets };
+```
+
+まずはこれだけで bundle はされませんが、
+
+```tsx
+// src/Index.tsx
+import * as React from 'react';
+import { render } from 'react-dom';
+
+render(<h1>Hello World!!</h1>, document.querySelector('#root'));
+```
+
+上記のようなコードが書けるようになります。んでもって
+
+```bash
+$ babel src/Index.tsx -o dist/index.js
+```
+
+こうすれば、babel によるコードのトランスパイルは完了。
+
+## webpack の設定
+
+次は js を bundle して単体のファイルで動くようにしていきます。っつてもここは普段の webpack の設定とそんなに変わりません。
+
+```javascript
+// webpack.config.js
+'use strict';
+
+const path = require('path');
+
+module.exports = {
+  target: 'web',
+  // entry pointをrepository root からの src/Index.tsxを想定
+  context: path.join(__dirname, 'src'),
+  entry: './Index',
+  // 出力先は dist/index.js です
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: './index.js',
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+      },
+    ],
+  },
+};
+```
+
+ここは皆さんの普段の babel-loader+webpack と変わらんのジャマイカでしょうか。
+
+## 型チェックの問題
+
+さて実はここで静的型チェックの問題があります。
+例えば
+
+```tsx
+// src/Index.tsx
+import * as React from 'react';
+import { render } from 'react-dom';
+
+// number型にstringを入れてる
+const content: number = 'Hello World!!';
+
+render(<h1>{content}</h1>, document.querySelector('#root'));
+```
+
+number 型に string を入れてるの明らかに間違ってるんですが、`@babel/preset-typescript`では型チェックをしないので(トランスパイルするだけ)、これは通っちゃって dist/index.js に成果物が吐き出されます。
+のでトランスパイルは babel を使い、静的型チェックは従来どおり tsc を使うという戦略で行きます。
+
+## 型チェックとしての tsc の導入
+
+まずは tsconfig.json をば。
+
+```json
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "allowJs": false,
+    "jsx": "react",
+    "declaration": false,
+    "noEmit": true,
+    "strict": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
+```
+
+意図としては、コードのトランスパイルは babel がやってくれるので型チェック(厳密には import 先が間違ってないかとかも)だけやって tsc コマンドを実行した後は何も生成しないという意図になります。
+んでは一個ずつオプションの解説をば。
+
+### target
+
+コンパイル後の EcmaScript のバージョン指定です。
+実際は tsc で成果物作るわけではないのでなんでもいいと思いますが、一応バージョン固定したかった(ので`ESNEXT`は指定してません)のと、現時点(2019 年 2 月)で最新の`es2018`を指定しました。
+
+### module
+
+module の import 方式をどうするか。ここも成果物を作るわけではないので、なんでもいいと思います。
+
+### allowJs
+
+tsx と ts しか使わないよという前提であれば(import 先を除く)で false にして CI フェーズとかで弾いてもいいのではと考えました。
+
+### declaration
+
+false にすることで`d.ts`の型定義ファイルの生成をさせないようにします。
+
+### noEmit
+
+true にすることで置換後の js ファイルを吐き出さないようにします。(src/Index.tsx に対して src/Index.js みたいな)
+
+### strict
+
+true にすることで、null とか any とか implicit return を厳格にチェックしてくれます。
+
+## react.production.min.js をバンドルに使う
+
+`@babel/preset-react`には`development`というオプション(ref: [https://babeljs.io/docs/en/babel-preset-react#development](https://babeljs.io/docs/en/babel-preset-react#development))があって、これの切り替えによって development モードを true にできます。
+また、`react/index.js`の配下には
+
+```javascript
+// node_modules/react/index.js
+'use strict';
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./cjs/react.production.min.js');
+} else {
+  module.exports = require('./cjs/react.development.js');
+}
+```
+
+というコードが入っていて、環境変数 NODE_ENV による切り替えが可能です。ので、ここでは babel.config.js で NODE_ENV をコントロールできるように
+
+```javascript
+// babel.config.js
+'use strict';
+
+// NODE_ENVがproductionかどうかの判定
+const isDev = process.env.NODE_ENV !== 'production';
+
+const presets = [
+  ['@babel/preset-env'],
+  [
+    '@babel/preset-typescript',
+    {
+      isTSX: true,
+      allExtensions: true,
+    },
+  ],
+  [
+    '@babel/preset-react',
+    {
+      development: isDev,
+    },
+  ],
+];
+
+module.exports = { presets };
+```
+
+NODE_ENV の判定を入れました。
+
+## 仕上げ
+
+さて、これでビルドの材料は揃ったので、仕上げに`npm-scripts`を仕込んでいきましょう。
+以下は package.json の scripts 部分の抜粋です。
+
+```json
+"scripts": {
+  "build:production": "NODE_ENV=production; tsc && webpack --mode=production",
+  "build:development": "tsc && webpack --mode=development"
+}
+```
+
+例えばですが、ガンガン開発するときは tsc 無視して ci とかテストフェーズだけ tsc 回して型ミスってるところだけ直していくっていうスタイルも取れるのかなーと考えています。
+(まぁ parcel.js 使えと言われれば元も子もないんですけどねｗ)
+
+## 参考
+
+- [https://github.com/Microsoft/TypeScript-Babel-Starter](https://github.com/Microsoft/TypeScript-Babel-Starter)
+- [https://babeljs.io/docs/en/babel-preset-env](https://babeljs.io/docs/en/babel-preset-env)
+- [https://babeljs.io/docs/en/babel-preset-typescript](https://babeljs.io/docs/en/babel-preset-typescript)
+- [https://babeljs.io/docs/en/babel-preset-react](https://babeljs.io/docs/en/babel-preset-react)

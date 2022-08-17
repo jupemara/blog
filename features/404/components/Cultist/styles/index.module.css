@@ -1,0 +1,49 @@
+.cultist-500 {
+  width: 48px;
+  height: 72px;
+  background-image: url('./cultist-500ms-3x.gif');
+}
+
+.cultist-600 {
+  width: 48px;
+  height: 72px;
+  background-image: url('./cultist-600ms-3x.gif');
+}
+
+.cultist-700 {
+  width: 48px;
+  height: 72px;
+  background-image: url('./cultist-700ms-3x.gif');
+}
+
+.cultist-800 {
+  width: 48px;
+  height: 72px;
+  background-image: url('./cultist-800ms-3x.gif');
+}
+
+@media (max-width: 520px) {
+  .cultist-500 {
+    width: 32px;
+    height: 48px;
+    background-image: url('./cultist-500ms-2x.gif');
+  }
+
+  .cultist-600 {
+    width: 32px;
+    height: 48px;
+    background-image: url('./cultist-600ms-2x.gif');
+  }
+
+  .cultist-700 {
+    width: 32px;
+    height: 48px;
+    background-image: url('./cultist-700ms-2x.gif');
+  }
+
+  .cultist-800 {
+    width: 32px;
+    height: 48px;
+    background-image: url('./cultist-800ms-2x.gif');
+  }
+}

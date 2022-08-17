@@ -1,9 +1,9 @@
 import { config } from 'lib/config';
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
-import { Header } from '../features/header';
-import { Grid } from '../features/Home/components/Grid';
-import { Island } from '../features/Home/components/Island';
+import { Header } from 'features/header';
+import { Grid } from 'features/Home/components/Grid';
+import { Island } from 'features/Home/components/Island';
 import { getAllPosts } from 'lib/posts';
 import dayjs from 'dayjs';
 
@@ -22,13 +22,14 @@ const Home: NextPage<PostsProps> = ({ posts }: PostsProps) => {
         <meta property="og:description" content="ワイのブログやで" />
         <meta property="og:site_name" content={config.site} />
       </Head>
-      <Header></Header>
+      <Header />
       <main>
         <Grid>
-          {posts.map((v, i) => {
+          {posts.map((v) => {
             return (
               <Island
-                key={i}
+                key={v.slug}
+                slug={v.slug}
                 title={v.title}
                 lastUpdatedAt={v.lastUpdatedAt}
                 txt={v.txt}
@@ -47,6 +48,7 @@ export const getStaticProps = () => {
       posts: getAllPosts()
         .map((v) => {
           return {
+            slug: v.meta.slug,
             title: v.meta.title,
             lastUpdatedAt: v.meta.publishedAt,
             txt: v.txt,

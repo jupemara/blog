@@ -1,0 +1,35 @@
+.container {
+  --padding: 72px;
+  display: flex;
+}
+
+.c1 {
+  padding-top: calc(var(--padding) * 4);
+}
+
+.c2 {
+  padding-top: calc(var(--padding) * 3);
+}
+
+.c3 {
+  padding-top: calc(var(--padding) * 2);
+}
+
+.c3-end {
+  padding-top: calc(var(--padding) * 1);
+}
+
+.c4 {
+  padding-top: calc(var(--padding) * 1);
+}
+
+.c4-end {
+  padding-top: calc(var(--padding) * 2);
+}
+
+.c6 {
+  padding-top: calc(var(--padding) * 4);
+}
+.c7 {
+  padding-top: calc(var(--padding) * 4);
+}

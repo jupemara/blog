@@ -4,10 +4,10 @@ import {
   InferGetStaticPropsType,
   NextPage,
 } from 'next';
-import { Content } from '../features/posts/components/Content';
-import { MDX } from '../lib/mdx';
-import { getAllPosts } from '../lib/posts';
-import { Header } from '../features/header';
+import { Content } from 'features/posts/components/Content';
+import { MDX } from 'lib/mdx';
+import { getAllPosts } from 'lib/posts';
+import { Header } from 'features/header';
 import Head from 'next/head';
 import { config } from 'lib/config';
 

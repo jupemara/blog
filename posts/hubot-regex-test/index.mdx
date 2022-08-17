@@ -1,0 +1,93 @@
+---
+slug: hubot-regex-test
+title: 'hubotコマンドのregexだけをテストしたいんだよね'
+publishedAt: '2016-03-16T16:37:38Z'
+updatedAt: '2016-03-16T16:37:38Z'
+tags: [hubot, test]
+---
+
+hubot でも E2E テストをしようぜって話をしてる人がいてすげーなって思ってたんですけど、`hubot: ping`って叩くと PONG って書いてくるとかなら(つまりは非破壊的な動作なら)、テストしやすいなーって思ってたんですけど、例えば deploy のコマンドの返事だけを regex でテストするってのはどうもイケてるとは思いませんでした。そこで、[前回](http://blog.arashike.com/#/articles/8703f759f50cbf1aec88)、hubot でも MVWhatever しようってことで、models とかに実際呼び出されるメソッドを切り出すって話をしたので、hubot のコマンド自体にテストをしたいなーって話です。
+
+## hubot コマンドの regex 正しく吸われているかどうかのテスト
+
+まずは mocha と chai を入れときましょう(まぁ、jasmine でも ava でもなんでもいいです)。
+
+```bash
+npm install mocha chai --save-dev
+```
+
+それと、どっかにつなぎにいってもいやなので、mock-adapter も入れときましょう。
+
+```bash
+npm install hubot-mock-adapter
+```
+
+っでは実際に regex のテストを書いてみます。まずは本体から。
+
+```coffeescript
+# scripts/deploy.coffee
+# Description
+#   Deploy
+#
+# Commands:
+#   hubot: deploy to ENVIRONMENT:REVISION
+
+# ダミーのコントローラー
+Controller = require './controllers/deploy_controller'
+
+module.exports = (robot) ->
+
+  robot.respond /deploy\s+([\w._-]+)\s*:\s*([\w._-]+)\s*$/, (res) ->
+
+    environment = res.match[1]
+    revision = res.match[2]
+    controller = new Controller environment, revision
+    controller.execute()
+```
+
+んでこれをテストしたい。
+
+```coffeescript
+# test/regex/deploy.coffee
+{expect} = require 'chai'
+{Robot} = require 'hubot'
+
+describe 'deploy', ->
+  environment = 'production'
+  revision = 'v0.1.0'
+  robot = new Robot null, 'mock-adapter', false, 'test-hubot'
+  # regexのテストしかしない(状態遷移についてのテストがない)ので、afterやbeforeEachのようなフックは使用しない
+  regex = require('../../scripts/deploy')(robot).listeners[0].regex
+
+  # まずは環境名とリビジョンが正しく取れるかどうかのテスト
+  context 'with input = "test-hubot: deploy production:v0.1.0"', ->
+
+    it 'gets environment and revision', ->
+      match = regex.exec "test-hubot: deploy #{environment}:#{revision}"
+      expect match[1]
+        .to.be.equal environment
+      expect match[2]
+        .to.be.equal revision
+
+  # regexにマッチしないことを確認するテスト
+  context 'with input = "test-hubot: deploy production:********"', ->
+
+    it 'does not match', ->
+      match = regex.exec "test-hubot: deploy #{environment}:********"
+      expect match
+        .to.be.equal null
+```
+
+みたいな。これできれいにコマンドの regex 部分を切り分けることができましたね。コマンドが長くなってくると TYPO も結構怖かったり、コマンド数が増えてくると予期せぬ match が発生(え、このコマンドこっちにも match しちゃうのかーみたいな)するので、regex をテストしておくってのはお手軽な割に以外に大事だなーって思ってます。
+
+あとは npm test できるように package.json に
+
+```json
+..snip..
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script/register --recursive test/"
+  }
+..snip..
+```
+
+とかやっとけばいい感じだと思います。

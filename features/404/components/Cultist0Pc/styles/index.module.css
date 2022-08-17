@@ -1,0 +1,20 @@
+.container {
+  --padding: 72px;
+  display: flex;
+}
+
+.c1 {
+  padding-top: calc(var(--padding) * 2);
+}
+
+.c2 {
+  padding-top: var(--padding);
+}
+
+.c2-end {
+  padding-top: calc(var(--padding) * 3);
+}
+
+.c3-end {
+  padding-top: calc(var(--padding) * 5);
+}

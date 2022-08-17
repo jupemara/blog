@@ -1,0 +1,12 @@
+.container {
+  --padding: 72px;
+  display: flex;
+}
+
+.c2 {
+  padding-top: calc(var(--padding) * 2);
+}
+
+.c4 {
+  padding-top: calc(var(--padding) * 2);
+}

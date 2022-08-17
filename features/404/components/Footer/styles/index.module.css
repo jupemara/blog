@@ -1,0 +1,11 @@
+.footer {
+  height: 216px;
+  background-image: url('./background-3x.gif');
+}
+
+@media (max-width: 520px) {
+  .footer {
+    height: 144px;
+    background-image: url('./background-2x.gif');
+  }
+}

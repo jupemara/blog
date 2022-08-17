@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { FC, ReactNode } from 'react';
-import { Octobot } from '../../../../components/Octobot';
+import { Octobot } from 'components/Octobot';
 import styles from './styles/index.module.css';
+import { Padding10px } from 'components/Padding10px';
 
 type Props = {
   title: string;
@@ -10,7 +11,8 @@ type Props = {
 
 export const Content: FC<Props> = ({ title, children }) => {
   return (
-    <>
+    <div className={styles.container}>
+      <Padding10px></Padding10px>
       <div className={styles.header}>
         <div className={styles.object}>
           <Image
@@ -31,6 +33,6 @@ export const Content: FC<Props> = ({ title, children }) => {
         </div>
       </div>
       <div className={styles.footer}></div>
-    </>
+    </div>
   );
 };

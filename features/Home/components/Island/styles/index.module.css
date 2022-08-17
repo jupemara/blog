@@ -14,7 +14,6 @@
 .warp-ball {
   z-index: 3;
   position: absolute;
-  top: -46px;
   width: 64px;
   height: 80px;
   background-image: url('./warp-ball-2x.png');
@@ -31,7 +30,6 @@
 .warp-shadow {
   z-index: 1;
   position: absolute;
-  top: calc(-46px + 80px);
   width: 64px;
   height: 16px;
   background-image: url('./warp-shadow-2x.png');

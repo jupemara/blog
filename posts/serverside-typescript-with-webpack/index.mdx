@@ -1,0 +1,171 @@
+---
+slug: serverside-typescript-with-webpack
+title: 'webpackでサーバサイドでもTypeScriptしようぜ'
+publishedAt: '2016-04-11T18:44:42Z'
+updatedAt: '2016-04-11T18:44:42Z'
+tags: [TypeScript, NodeJS, webpack]
+---
+
+主はおっしゃいました webpack はフロントエンドの javascript にだけ与えられたものではないと。よろしい!ではサーバサイドも TypeScript で webpack で es5(or es6 or es2015(まさかり対策))にしようではないか。
+
+- 今回のサンプルは[こちら](https://github.com/JumpeiArashi-blog/serverside-typescript-with-webpack/)に保存してあります m(\_ \_)m
+
+## サーバサイド nodejs にも型が欲しかった
+
+そもそも、サーバサイドなら別に他の言語を使いなさいというのはもっともですが、IO レイヤーの処理のひとつにスクレイピングでデータを取得するという部分があって(もちろん selenium でもいいんだが)、そいつを[nightmare](https://github.com/segmentio/nightmare)で書いていたので、これはもう wrap するレイヤーも nodejs で行くしかないなっという背景であります。
+
+ただせっかくですし、サーバサイドですし、割りときっちりした型がほしいなぁと思いまして。それで TypeScript をサーバサイドで使って webpack で build しようという試みです。
+
+## Building with webpack in server side
+
+TypeScript に進む前にまずはサーバサイド nodejs を webpack でひとつの index.js としましょう。適当に`npm init`して、`npm install --save-dev webpack`(ぼくは global install を推奨したくないので、local install で path を解決する方向でいきます。)
+`src/index.js`に簡単な関数を指定して`module.exports`しただけのものが、[こちら](https://github.com/JumpeiArashi-blog/serverside-typescript-with-webpack/commit/9ed73b0e9f946c1ea4f7595aa28c77a120514ffc)。まだこの段階ではただの webpack を使った build です。
+
+## Using nodejs modules
+
+次に適当な nodejs の module を使ってみます。ブラウザで動かせない且つ、今回の model に合わせるために、nightmare を使用します。`npm installe nightmare --save`します。んでもって、model 層の処理として簡単な data を取得する処理を書きます。
+
+```javascript
+//src/models/scraper.js
+'use strict';
+
+const Nightmare = require('nightmare');
+
+class HtmlContent {
+  constructor(url) {
+    this.url = url;
+  }
+
+  getContent() {
+    new Nightmare()
+      .goto(this.url)
+      .wait(5000)
+      .evaluate(() => {
+        return document.querySelector('body').innerHTML;
+      })
+      .end()
+      .then((result) => {
+        return result;
+      });
+  }
+}
+module.exports = HtmlContent;
+```
+
+んでもって、exports された model をそのまま index.js にて exports します。
+
+```javascript
+//src/index.js
+'use strict';
+
+const Scraper = require('./models/scraper');
+
+module.exports = {
+  Scraper: Scraper,
+};
+```
+
+ここまでの処理が[こちら](https://github.com/JumpeiArashi-blog/serverside-typescript-with-webpack/commit/964705be6bcc6425d10e51776d7e472bcb6010e4)。
+
+## Building nodejs program by webpack
+
+ここでおもむろに webpack で build してみる。
+
+```bash
+$(npm bin)/webpack
+Hash: d86c13400a0572da64bc
+Version: webpack 1.12.15
+Time: 23ms
+   Asset     Size  Chunks             Chunk Names
+index.js  1.41 kB       0  [emitted]  main
+    + 1 hidden modules
+```
+
+build 自体は通る。しかし、ここでこんな風に成果物を require してみると...
+
+```bash
+$node
+> var index = require('./dist/index')
+ReferenceError: nightmare is not defined
+```
+
+nightmare が undefined だと。ﾌｧｯ??っと言いたい。require してるだけやんと。(実際ぼくはいいたくなった) この原因は module の解決が default だと`var`という値が設定されていて global 変数から解決しようとするから起こっています(ということが調べていたらわかった)。っというわけで、module の解決に commonjs を使ってみましょう。(やっと webpack.config.js に辿りつけた（；^ω^）)
+
+```javascript
+//webpack.config.js
+'use strict';
+
+const path = require('path');
+
+module.exports = {
+  target: 'node',
+  externals: /^(?!^\.\/)/,
+  context: path.join(__dirname, 'src'),
+  entry: './index.js',
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: 'index.js',
+    libraryTarget: 'commonjs2',
+  },
+  resolve: {
+    extensions: ['', '.js'],
+  },
+};
+```
+
+ここで特に抑えておきたいのは`libraryTarget: 'commonjs2'`と、`externals: /^(?!^\.\/)/`でありんす。
+
+### libraryTarget
+
+こいつは、さっきの default の var を commonjs に差し替えるってやつで、module の解決を commonjs で解決してくれます。なのでこのオプションを設定すると`nightmare is not defined`がでなくなるます。
+
+### externals
+
+externals は除外対象なので、build の対象外って感じ。今回は node_modules を npm によって解決したいので、*./で始まってない module*を exclude してます。
+
+さて、ここまでの成果物が[こちら](https://github.com/JumpeiArashi-blog/serverside-typescript-with-webpack/commit/df84b48a902b088f46281b565b330381346e725a)。
+
+## TypeScript
+
+ふぅー、やっと typescript にたどりつけましたね。まずは、typescript 環境が欲しいので`npm install --save-dev typescript webpack ts-loader typings`しましょう。
+
+－－－－－－－－－－　 TypeScript 化　－－－－－－－－－－－
+
+1. `$(npm bin)/typings init`で d.ts を get できる環境を用意しときましょう。
+2. `$(npm bin)/typings install nightmare --save --ambient`nightmare の d.ts を取得。
+3. `mv src/index.js src/index.ts && mv src/models/scraper.js src/models/scraper.ts`
+4. ごにょごにょっと typescript します w
+
+まぁ、この TypeScript 化には深い意味はないですｗ
+
+## webpack.config.js + ts-loader
+
+ts-loader から.ts ファイルを読み込みます。単純に`tsc --init`して ts-loader を使うとバラバラバラっとたくさんエラーが出ます。
+
+```bash
+$(npm bin)/webpack
+ERROR in /Users/JumpeiArashi/tmp/serverside-typescript-with-webpack/typings/main/ambient/nightmare/index.d.ts
+(121,3): error TS2300: Duplicate identifier 'export='.
+
+ERROR in /Users/JumpeiArashi/tmp/serverside-typescript-with-webpack/typings/browser/ambient/nightmare/index.d.ts
+(121,3): error TS2300: Duplicate identifier 'export='.
+
+ERROR in ./models/scraper.ts
+(17,8): error TS2339: Property 'end' does not exist on type 'Nightmare'.
+```
+
+nightmae.end が定義されてないのは残念ですが、typings/browser 配下の index.d.ts も build 対象になってますねぇ。。。ts-loader 側に exclude したいところですが、[ts-loader の README](https://github.com/TypeStrong/ts-loader/blob/master/README.md)を見ると、tsconfig.json に書けと書いてありますねぇ。っというわけで、tsconfig.json に
+
+```json
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": false
+  },
+  "files": ["src/index.ts", "typings/main.d.ts"]
+}
+```
+
+files を指定する。ブラウザで動くようには作れてませんが、nightmare をブラウザで動かそうって人はいないと思うってのと、今回はサーバサイド TypeScript + webpack が目的なのでこれにて完了。.。o○(Nightmare の ambient module に PR 出そうかな)

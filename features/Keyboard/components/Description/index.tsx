@@ -1,11 +1,13 @@
 import { BorderLemon } from 'components/BorderLemon';
+import { Padding10px } from 'components/Padding10px';
 import Image from 'next/image';
 import styles from './styles/index.module.css';
 
 export const Description = (): JSX.Element => {
   return (
-    <>
-      <div className={styles.container}>
+    <div className={styles.container}>
+      <Padding10px></Padding10px>
+      <div className={styles['desc-container']}>
         <BorderLemon>
           <p className={styles.desc}>
             このリンクを みつけられてしまうとは...
@@ -54,6 +56,6 @@ export const Description = (): JSX.Element => {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 };
