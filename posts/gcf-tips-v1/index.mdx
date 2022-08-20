@@ -1,0 +1,124 @@
+---
+layout: blog
+title: Google Cloud Functions の Tips vol.1
+path-alias: gcf-tips-v1
+published-date: 2021-09-02T02:00:00.000+09:00
+thumbnail: /images/from-cms/gcf.png
+---
+最近はずっと [Google Cloud Functions](https://cloud.google.com/functions/docs/concepts/overview) 書く時、TypeScript+Node.JSで書いてたんですけど、久々にGolangで書いたらいろいろ忘れてたので、戻ってこれるように Tips をまとめます。
+
+## 今回紹介するやつら
+
+1. always HTTPS(今回はHTTPトリガーのfunctionで逝きます)
+1. 環境変数の使用
+1. 依存関係の解決その1
+1. 依存関係の解決その2(private repositoryだった時)
+1. ファイルシステムへのアクセス
+
+## always HTTPS
+
+HTTPトリガーのCloud Functions(以下CF)を定義したとき、常にHTTPSにさせる方法(デフォはHTTP, HTTPSの両方で受け付けます)。挙動としてはHTTPでアクセスするとHTTPSにリダイレクトされます。
+`gcloud functions deploy` コマンドに `--security-level secure-always` をくっつける。それだけ。ちなみにデフォは `secure-optional` 。(記事執筆時点2021-09-02T02:00:00+09:00)
+
+### 参考URL:
+
+- https://cloud.google.com/functions/docs/writing/http#security_levels
+
+## 環境変数の利用
+
+`gcloud functions deploy` コマンドに直接貼り付けて書いてもいいんですけど、デプロイの都度環境変数が変わっちゃうのが怖いので、ワイはファイルに指定派。
+
+```
+# env.yaml
+MYNAME: "jupemara"
+
+# bool型を指定すると怒られる(後述)
+# BOOLEAN_VALUE: TRUE
+STRING_VALUE: "TRUE"
+```
+
+yaml形式で書いて、 `gcloud functions deploy` コマンドに `--env-vars-file env.yaml` みたいにファイルパスを渡してやればOK。
+`KEY: VALUE` 形式で書く。ただし、string型を指定しないといけないので、 `TRUE` みたいなものを渡したいときは `"TRUE"` `"` でくくって文字列にしてあげる必要がある。
+あと `GOOGLE_` prefixは予約語がいくつかあるので、非推奨。
+
+### 参考URL
+
+- https://cloud.google.com/functions/docs/configuring/env-var
+- https://cloud.google.com/functions/docs/configuring/env-var#using_build_environment_variables
+- https://cloud.google.com/functions/docs/configuring/env-var#best_practices_and_reserved_environment_variables
+
+## 依存関係の解決その1
+
+go.mod を使う方法と vendor ディレクトリを使う方法がある。
+
+### go.mod
+
+`go mod init` とか `go get` とか `go install` とか使って依存関係をインスコしてく。んで普通にdeployすればOK
+
+### vendor
+
+`go mod vendor` 使って依存モジュールを事前にディレクトリとして保存しておく必要あり。
+
+### 共存について
+
+go.mod と vendor の両方が存在してると vendor が無視される。vendor を優先してほしいときは `.gcloudignore` に `go.mod` って書いとくべし。
+
+### 参考URL
+
+- https://cloud.google.com/functions/docs/writing/specifying-dependencies-go
+- https://cloud.google.com/functions/docs/writing/specifying-dependencies-go#using_a_vendor_directory
+
+## 依存関係の解決その2
+
+正直コレがドキュメントに記載されていない気がしていて、前もそういえばおんなじことやったなーと思ったので、ここが一番のTipsになると思う。公式ドキュメントには
+
+```
+関数の依存関係が一般公開されていないリポジトリでホストされる場合、その関数をデプロイする前に、vendor ディレクトリを使用して依存関係を取得する必要があります。go.mod ファイルを使用する場合は、上記の手順を参照して、go.mod ファイルと vendor ディレクトリの間の競合を回避してください。
+```
+
+ってかいてあるんやけど、んじゃあ自分自身がprivate repositoryで自分自身の他のディレクトリ配下のファイルに依存してるときはどうすんのって話なんやけど、( `go mod vendor` を実行しても自分自身はディレクトリに入らないし、外部から依存関係解決させようとするとそんなrepositoryねえよって言われる。。。)結論から言うと
+
+```
+gcloud functions deploy --source ./
+```
+
+ってrepositoryの場所をカレントディレクトリにしたあと、vendorではなく go.mod で依存関係を解決してあげると、あら不思議！デプロイできちゃう。
+https://github.com/GoogleCloudPlatform/golang-samples/issues/743#issuecomment-458574149 このgithubのコメントにはgo.modがある場所がrootになるし、1階層上のディレクトリを含めようとしてもgo.modのある場所になるからそれはできない。そういうときはvendorを使えとしか書いてない。。。
+`--source ./` を使おうぜっていうTips。コレでgo.modだけにできるのはかなりうれC.
+
+## ファイルシステムへのアクセス
+
+コンフィグファイルとかをリポジトリのルートに `config.yaml` とか `config.json` とかおいて実行したいよねーって思うんやけど、んで例えば
+
+```Go
+// ----config.go----
+package config
+
+import (
+    "io/ioutil"
+
+    "gopkg.in/yaml.v2"
+)
+
+func ReadConfigFile(path string) ([]byte, error) {
+	bytes, err := ioutil.ReadFile(path)
+	if err != nil {
+        return nil, err
+	}
+    return bytes, err
+}
+```
+
+こんな関数があるとしてコレをリポジトリのルートから `config.ReadConfigFile("./config.yaml")` とかやろうとすると(ってかやりたいよね??)、んなファイルはねえよって怒られちゃう。
+コレは Cloud Functions の仕様で `./serverless_function_source_code/config.yaml` みたいに `./serverless_function_source_code` を格納先として指定してあげる必要があるんだな。
+コレもよく忘れる... いつか普通に `./config.yaml` って直接指定できる日がコレばいいのだが。。。
+
+### 参考URL
+
+- https://cloud.google.com/functions/docs/samples/functions-concepts-filesystem
+
+## まとめ
+
+- `--source ./` をつけろ
+- そもそも現時点(2021-09-02T02:00:00+09:00)では Golang のランタイムが 1.13 なので、 `io/util` のモジュールが `io` に命名変更された件とかは含まれてないので、用途によっては Cloud Run でいいと思いますｗ
+  - ref: https://cloud.google.com/functions/docs/concepts/exec
