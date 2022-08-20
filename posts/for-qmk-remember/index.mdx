@@ -1,0 +1,66 @@
+---
+slug: for-qmk-remember
+title: 久しぶりに qmk コマンド叩いたらほぼほぼ忘れてたので忘れないようにメモ
+publishedAt: '2021-09-17T20:19:58.000Z'
+updatedAt: '2021-09-17T20:19:58.000Z'
+tags: [qmk, 自作キーボード]
+---
+
+もともと使ってたキーボードがぶっ壊れた(っというか pro micro がもげただけなんやけど、キースイッチをソケット化してなかったっていうのもあるし、新しいキースイッチを試したかったてのもあったので)ので、新調することにした。
+んで、ちょっち keymap を変更したかったので (今後 corne cherry v3 みたいな 40% キーボードを使う時も考慮してほとんどホームポジションから動かさないようにするための練習も兼ねて) 久々に `qmk` コマンド叩いたら完全に脳内から消し飛んでいた &&
+PC が変わったからそもそも `qmk` のセットアップさえされてなかったので結局本家のドキュメンテーションを見直して環境構築からやりなすことになってしまったため、2 回め移行のためのメモを書き残しておくことにしました。
+
+## 環境構築
+
+とりあえず困ったら[本家のページ](https://docs.qmk.fm/#/newbs) を見に行く。
+
+1.なにはともあれ環境の qmk のインストールから brew でさくっといけます
+
+```sh
+$ brew install qmk/qmk/qmk
+```
+
+2.qmk ホームの指定
+
+[本家のオススメによると](https://docs.qmk.fm/#/getting_started_github) [qmk/qmk_firmware](https://github.com/qmk/qmk_firmware/) をフォークして、 `<github_username>/qmk_firmware` を qmk ホームとするために以下でセットアップ
+
+```sh
+$ qmk setup -H <github_username>/qmk_firmware
+```
+
+手順的にはこれだけ。一瞬。
+
+## ビルド
+
+キーボードにもよるとは思うけど、どっちの手用のを焼く ( flash するか) かを決める必要がある。だいたいは、 `qmk_firmware/keyboards/<keyboard_name>/config.h` とかに書かれてる
+
+```c
+#define MASTER_LEFT
+// #define MASTER_RIGHT
+```
+
+を都度ぱたぱた切り替えたあとに
+
+```sh
+$  qmk flash -kb <keyboard_name> -km <keymap_directory_name>
+```
+
+って叩いてから RESET キー的な操作をすれば問題なし。 ref: https://github.com/qmk/qmk_firmware/blob/master/docs/ja/newbs_flashing.md
+RESET の手順はキーボードによって違うけど、まぁまぁの割合で物理ボタンが用意されてるケースが多い。
+
+## keymap とレイヤー
+
+一言で言うと
+
+- https://qiita.com/rai_suta/items/0376ed4ce6498bb85770#%E3%82%AD%E3%83%BC%E3%83%9E%E3%83%83%E3%83%97%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC
+- https://github.com/jupemara/qmk_firmware/blob/master/keyboards/kudox/rev3/keymaps/jupemara/keymap.c
+
+この辺りがチートシートなのでここを見ろって感じ。
+特に LT , TO あたりのレイヤーキーの使い方は毎回絶対っていいほど忘れるので、引数とか hold したときと tap したときの違いで レイヤーキーにするのか、例えば IME 切り替えキーにするのかは要チェックやで。(ワイの場合、レイヤーキーを tap したとき、 IME 切り替えキーにする設定が多いため)
+
+## 2021-09-18 の完成品はこちら
+
+https://twitter.com/araottii/status/1438824602688385025
+![今回の完成品: kudox rev3](./kudox-rev3.jpg)
+
+また追加で更新があったらメモっていきます ( BLE PRO MICRO の話とか!)
