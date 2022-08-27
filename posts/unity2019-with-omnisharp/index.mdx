@@ -1,0 +1,54 @@
+---
+slug: unity2019-with-omnisharp
+title: unity2019でOmniSharpを有効にする
+publishedAt: '2021-09-20T21:54:30.129Z'
+updatedAt: '2021-09-20T21:54:30.129Z'
+tags: [unity, OmniSharp]
+---
+
+## unity2020 のプロジェクトでは普通に OmniSharp が動くのに。。。
+
+vscode 経由で Unity のプロジェクト (C#) を開く時、Unity2020 系なら Unity 上部のメニューバーから
+
+- Assets
+- Open C# Project
+
+で開けば vscode が立ち上がってそれと同時に OmniSharp も立ち上がってきて `.sln` とか `.csproj` のファイルを読んでくれて、 output の項目に loaded xxx file みたいなメッセージがどばーっと出てくれるんだが、、、
+
+## unity2019 だと vscode が立ち上がっても一緒に OmniSharp が起動されない...
+
+どういうわけか、コードジャンプもコード補完もというか Intellisense 系が全く動かない。そもそも `No Definition` 的なメッセージすら出てなくてどうやら OmniSharp が起動できてないっぽいってことがわかった。
+実はコレ、ググっても OmniSharp 自体が起動できてないって言ってる人は全然いなくて、みんな OmniSharp のログに `$` のパスが通ってないってメッセージが出てるとかそういうのが多かった。
+
+結局やったことは setting.json に
+
+```json
+{
+  "omnisharp.useGlobalMono": "always"
+}
+```
+
+が入ってるにも関わらず、 OmniSharp が立ち上がらないという問題なので、 Command+Shift+P からコマンドパレットを起動して、 `Restart OmniSharp` を実行した。
+しかし、これをやってもなんーもおこらんくて、1 時間ほど途方にくれていたところ、実行後になんらかのファイルを渡す必要があった。。。ので `{PROJECT_NAME}.sln` を指定してあげたら動いた。。。
+初歩的過ぎて && Unity2020 では自動で立ち上がってくれたってのもあって、完全にどはまりしました。。。
+
+## 今後の自分のために
+
+もし同じ現象が起こってしまったら
+
+1. 必要な周辺ツールのインストール
+
+- vscode
+- unity
+- mono (through homebrew)
+  - `brew install mono` (クソ時間かかるｗ)
+- dotnet (through asdf)
+  1. `asdf list all dotnet`
+  1. `asdf install dotnet-core {YOUR_NEED_VERSION}`
+
+2. csproj, sln ファイルの再生成: Unity の menu bar => preferences => `Regenerate project files`
+3. Unity C# Project の開き直し with vscode: Unity の menu bar => Assets => Open C# Project
+4. vscode 側から OmniSharp の再起動: vscode のコマンドパレットから `Restart OmniSharp` => sln ファイルを指定
+5. OmniSharp のログを確認する: ctrl+` で console ペインを開いて OUTPUT に移動 => OmniSharp Log を選択する
+
+まじで疲れたわ。。。
