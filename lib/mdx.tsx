@@ -3,6 +3,7 @@ import { Processor, unified } from 'unified';
 import React from 'react';
 import { context } from './context';
 import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
 import remarkStringify from 'remark-stringify';
 import remarkMdx from 'remark-mdx';
 import remarkEmoji from 'remark-emoji';
@@ -33,6 +34,7 @@ export const MDX = (props: { dir: string; mdx: string }): JSX.Element => {
 function processor(): Processor {
   return unified()
     .use(remarkParse)
+    .use(remarkGfm)
     .use(remarkStringify)
     .use(remarkMdx)
     .use(remarkRehype)
