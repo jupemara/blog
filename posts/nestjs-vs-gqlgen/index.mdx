@@ -1,0 +1,128 @@
+---
+slug: nestjs-vs-gqlgen
+title: NestJS と gqlgen ~DIの観点から~
+publishedAt: '2022-08-27T02:00:00.000+09:00'
+updatedAt: '2022-08-27T02:00:00.000+09:00'
+tags: [NestJS, gqlgen, TypeScript, TS, Go, Golang]
+---
+
+## 目的
+
+- 次のプロジェクトで graphql を採用することが決まった。そこで TypeScript か Golang (自分が書きやすい言語という意味で) のどちらにしようか調べてた
+- つまり gqlgen と NestJS のどっちのほうが開発体験がよさげなのかをまとめておくことにした
+
+もしプロジェクト開始の段階で悩んでいらっしゃる方がいたら参考になればコレ幸い!!
+
+## 実際に Tutorial やるまえの先入観 ( 公式 docs は読まずにネットで調べただけの知識 )
+
+### NestJS
+
+- デコレータ書きまくるのがちょっとなぁ...
+  - デコレータ恐怖症ってのとデコレータって何やってるか不明瞭になること多くない??という疑念
+- inspired by Angular... Angular ねぇ :thinking_face:
+- DI したいだけやのにいろいろと大げさに見える
+- TypeORM 押出杉では??
+  - 若干の rails for TS 感を感じる
+  - 逆に TypeORM してない firestore とか spanner を repository pattern 的に使いたいときはどうすれば??
+- NestJS + NextJS (んまぁこれは NextJS に限らずやけど) だと TS only でいけるのでサイコー
+  - コレほんまかいな??
+- [メルカリが採用してる](https://engineering.mercari.com/blog/entry/20210818-mercari-shops-nestjs-graphql-server/) からよさそう (情弱感)
+
+### gqlgen
+
+- 参考リンク
+  - https://user-first.ikyu.co.jp/entry/2019/12/16/113332#Go%E3%81%AB%E3%82%88%E3%82%8B%E3%82%B5%E3%83%BC%E3%83%90%E5%AE%9F%E8%A3%85
+  - https://www.gari8.com/posts/20210111/
+- Golang らしく? Presentation レイヤーとしての graphql を提供してくれていて chi みたいに使えたらいいなー
+- フレームワークとして薄そう (小並感)
+
+## とりあえずコード
+
+https://github.com/jupemara/graphql-languages
+
+に試したやつは置いときました。んでは早速両方よかったところ、悪かったところを見ていきましょう
+
+## 実際にチュートリアル+DI をやってみた
+
+### NestJS
+
+行った手順
+
+1. [公式のチュートリアル](https://docs.nestjs.com/first-steps) からサンプル作って、 graphql の resolver も作ってみてそこに interface で DI してみた
+
+https://github.com/jupemara/graphql-languages/tree/main/nestjs においてあります
+
+#### メリット
+
+- デフォで TS なのはとてもいい!!
+- デフォでいろんなものがシングルトンになるってのはいいですね!! DI コンテナと相性がいい
+- `providers` を使った DI コンテナ (といって良いんかな) が自分が思ってた以上にさらっと使えてよかった!
+  - [メルカリのテックブログ](https://engineering.mercari.com/blog/entry/20210818-mercari-shops-nestjs-graphql-server/) で書かれてるように複数のサービスを他のサービスで使いたいときはかなりよさげ
+- コードファーストを採用すればマイクロサービス開発の速度向上、各チームのコリオグラフィーをバク上げできそうな気がした
+- フレームワークに乗っかれば、DI も自分で書かなくてええんで、constructor 呼び出すときに `new XXX()` のネストが続くこともなくなるね
+  - DI のボイラープレートっておんなじこと毎回書いてる感が否めないのでここはスッキリして良いかも
+- サービスのバウンダリーごとにディレクトリを切っていくイメージになるので、 `src/author` , `src/todo` みたいな感じで サービスバウンダリー = マイクロサービスとなって、コードファーストと相性がよさそう
+  - 逆にドメインがちっさめだと分割する意味があんまりないので、ここは使い所要注意というかディレクトリ切りすぎ要注意かもですね
+- TypeORM 押出杉ではあったが、自前の repository レイヤーも `imports` に入れてあげればいいだけなので、んまぁ別にデメリットではない
+
+#### デメリット
+
+- `nest g` 系のテンプレを生成するスクリプト、薄めにできあがるのでそんなに問題にはならんような気はしているが、 breaking change するにはどうするんや感
+  - なんとなく yeomen を思い出した
+- デコレータ、なぁ!!!
+  - number を Int と Float に書き換える必要があるのでんまぁわかるんやけど `function(@Args('id', { type: () => Int})) {}` は流石にちょっとキモい感
+    - とはいえコレは慣れかなって気もする!! https://zenn.dev/miruoon_892/articles/365675fa5343ed 参考にさせていただきました :bow:
+- "service" って名前はどうかね！もうちょっと明示的な名前にならんかね!! DDD 的にもドメインサービスって各種ドメインモデルで解決できないときの最終手段として使うとありますしね
+  - inspired by Angular は伊達じゃないな
+    - とはいえコレも慣れっちゃ慣れ
+- TS の仕様により、 interface から reflection できないってことだそうで、interface に依存する service を作るときは token を文字列で指定するっていうちょっと一手間が必要
+  - NestJS 使わずに直接 DI するときは index.ts とかのルートモジュールで DI していくと思うので、ここは案外落とし穴になるかもね
+- DI できる箇所が各種 module 内と、 `app.module.ts` にあるので、コード量が増えてくると依存関係が不明瞭になりそう
+- デメリットというほどではないけど NextJS と NestJS で TS にまとまったけど、デコレータ書いたりするので、結構別物に感じました
+
+### gqlgen
+
+行った手順
+
+1. [github の readme](https://github.com/99designs/gqlgen) からサンプル作って、 `graph/resolver.go` 内で DI っぽく書いてみました
+
+https://github.com/jupemara/graphql-languages/tree/main/gqlgen においてあります
+
+#### メリット
+
+- 既存のロジックやディレクトリ構造に関係なく純粋な Presentation レイヤーとして graphql を使うことができそう
+  - つまり `infra/controller/http` みたいなディレクトリに近いノリで `graph/` を使えそう
+- スキーマファーストと golang の型システムとの相性がよさそう
+  - とはいえこのメリットは gqlgen というよりかは、 スキーマファーストと静的型付け言語でアレばなんでも一緒かもですね
+- フレームワークとして薄いので、DI の見通しがいい!
+  - schema ファイル内で `input` を定義するとここの関数の引数として入ってくるので、それをコマンドオブジェクトとして wrap するなり直接渡すなりすれば infra => usecase => domain model みたいな流れがうまく組めそうです
+
+#### デメリット
+
+- コレは NestJS 触った後に gqlgen を触った感想だからかもですけど、 DI のボイラープレートに近いコードがめんどくせぇ！
+  - 真面目にやると `NewXXXService` `NewXXXController` `NewXXXRepository` と三種を書くことになると思うんですが、それがちょっと('A\`)ﾏﾝﾄﾞｸｾ
+  - ただコレは逆にいうと、既存の資産をそのままつかえるという話なので、状況によって賛否両論あるなと感じました
+    - TS で同じことしたいなら graphql-yoga を使うという選択肢もあるわけですし
+- `graph/schema.resolvers.go` というファイルができてそこに controller 相当のコードを書いていくんですが、できればここはフレームワーク側でファイル分けてほしかったですね
+
+## まとめ
+
+golang で DI するときの `NewXXX` を書くのに結構疲れてきたので、 `NestJS` で逝きますね(ﾆｯｺﾘ)。
+
+## 参考リンク(順不同)
+
+- https://zenn.dev/miruoon_892/articles/365675fa5343ed
+- https://docs.nestjs.com/graphql/resolvers
+- https://docs.nestjs.com/techniques/database
+- https://docs.nestjs.com/fundamentals/custom-providers
+- https://speakerdeck.com/kimutyam/nestjsfalsedikontenatezuo-rukurinnareiyajing-jie?slide=18
+- https://thundermiracle.com/blog/2021-09-12-di-4-nestjs/
+- https://zenn.dev/dove/articles/72e66240f09f34#%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E9%96%A2%E9%80%A3%E3%81%AE%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%81%8C%E5%85%A5%E3%82%8B%E3%81%A8
+- https://gqlgen.com/getting-started/
+- https://www.reddit.com/r/golang/comments/cxgku4/golang_or_typescript_for_backend/
+- https://ricardoromanj.com/posts/firestore-with-nestjs
+- https://engineering.mercari.com/blog/entry/20210823-a57631d32e/
+- https://engineering.mercari.com/blog/entry/20210818-mercari-shops-nestjs-graphql-server/
+- https://user-first.ikyu.co.jp/entry/2019/12/16/113332#Go%E3%81%AB%E3%82%88%E3%82%8B%E3%82%B5%E3%83%BC%E3%83%90%E5%AE%9F%E8%A3%85
+- https://zenn.dev/waddy/books/graphql-nestjs-nextjs-bootcamp/viewer/nestjs
+- https://docs.nest-book.jp/
