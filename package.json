@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
-    "postbuil": "next-sitemap",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint"
   },
