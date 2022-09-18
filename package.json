@@ -25,6 +25,7 @@
     "eslint": "8.20.0",
     "eslint-config-next": "12.2.3",
     "gray-matter": "^4.0.3",
+    "next-sitemap": "^3.1.22",
     "raw-loader": "^4.0.2",
     "rehype-highlight": "^5.0.2",
     "rehype-react": "^7.1.1",
