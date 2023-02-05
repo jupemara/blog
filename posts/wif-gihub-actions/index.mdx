@@ -15,7 +15,7 @@ Workload Identity Federation (以下 WIF ) の設定って、 CI とか CD の�
 ## 用語
 
 そもそもいきなりプールとかプロバイダーって単語が出てきて、ハッ!? って毎回なるんで、まとめ。
-https://cloud.google.com/iam/docs/gg?hl=ja を見るのが手っ取り早いです。
+https://cloud.google.com/iam/docs/workload-identity-federation?hl=ja を見るのが手っ取り早いです。
 
 ### プール
 
@@ -32,8 +32,7 @@ Workload Identity プールのプロバイダは、外部 ID を管理できる�
 単位としてはプールの中に作る OIDC コネクタの単位と考えるとわかりやすいかもです。
 なので、例えば AWS, Github, みたいな単位で存在します。
 さらに [CEL](https://github.com/google/cel-spec/blob/master/doc/langdef.md#list-of-standard-definitions) を使って condition を書けるので、
-例えば github repository が複数あるケースとか、 github actions で複数の環境に CD しないといけないケースとかなら、
-`.github/workflows/{prd.yaml,dev.yaml}` とかの単位で分けて
+例えば github repository を特定の repository だけに絞るみたいなことが可能です。
 
 ## refs
 
