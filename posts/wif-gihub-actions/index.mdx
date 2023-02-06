@@ -38,9 +38,91 @@ Workload Identity プールのプロバイダは、外部 ID を管理できる�
 
 今回は github actions とつなぎこむのでどういう手順でつなぎ込んでいくのか確認しましょう
 
+プールの作成
+
+```sh
+# POOL_ID には上で書いたように環境やサービス単位で作ったりする. ワイは dev, stg, prd とかの単位で作ってる
+$ gcloud iam workload-identity-pools create ${POOL_ID} \
+  # 今の所 location は常にグローバル
+  --location="global" \
+  --description="${DESCRIPTION}" \
+  --display-name="${DISPLAY_NAME}"
+```
+
+プロバイダの作成(github actions の場合)
+
+```sh
+# 用途ごととかに作ったりする. ワイは github の repository で condition したいのもあって github-actions-cd みたいな PROVIDER_ID をつけたりしてる
+$ gcloud iam workload-identity-pools providers create-oidc ${PROVIDER_ID} \
+    --location="global" \
+    --workload-identity-pool=${POOL_ID} \
+    --issuer-uri="https://token.actions.githubusercontent.com/" \
+    # 後述する
+    --attribute-mapping="MAPPINGS" \
+    # 後述する
+    --attribute-condition="CONDITIONS"
+```
+
+プロバイダの作成の箇所に MAPPINGS ってのがあるけど、この MAPPINGS で属性情報のマッピングを書く
+
+`--attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository"`
+
+みたいな感じで `=` の中にカンマ区切りで書いていきます
+
+### conditions
+
+[CEL](https://github.com/google/cel-spec) っていう表記に基づいて特定の attribute であればみたいなことが書ける.
+github の repository 絞りなら `attribute.repository == "jupemara/blog"` みたいに **ユーザ名(または Org 名)/リポジトリ名** にすれば OK
+
 ## tips (っというかワイがハマったところなので、その備忘録)
+
+### conditions の指定ミスったときのヒント
+
+- WIF が動くタイミングでエラーが起こる
+  - つまり github actions 的には `uses: google-cloud-actions/auth@v1` が呼ばれるタイミングでエラーが出るので、だいぶ早いタイミングでエラーになるはず
+  - 上記の例だと対象の repository と違うときはこんな感じのエラーが出る: `{"error":"unauthorized_client","error_description":"The given credential is rejected by the attribute condition."}`
+
+### Failed to load credential file ってエラー
+
+コレで実は 1 時間くらいハマってしまって、 `gcloud auth configure-docker asia-northeast1-docker.pkg.dev` を叩いて認証用のコンフィグ作ってるのに読みに行く場所間違ってるじゃねぇか！！
+って思っていました。エラーの内容としては
+
+```
+ERROR: (gcloud.auth.docker-helper) Failed to load credential file: [/home/runner/work/ORG/REPO/gha-creds-xxx.json].  File /home/runner/work/ORG/REPO/gha-creds-xxx.json was not found.
+```
+
+っていうのが出るんですが、まったく原因がわからん。しかし https://github.com/google-github-actions/auth#prerequisites この prerequisites に書いてあって、
+**You must run the actions/checkout@v3 step before this action. Omitting the checkout step or putting it after auth will cause future steps to be unable to authenticate.**
+だそうで、 このアクション(google-cloud-actions/auth)の前に `actions/checkout@v3` を実行せよ = 先に `actions/checkout@v3` を実行しろ とのことです。
+
+### gcloud auth vs docker-login
+
+上記のエラーとも若干関係しますが、 `gcloud auth configure-docker REGION-docker.pkg.dev` が叩けるので、
+
+```yaml
+- uses: docker/login-action@v1
+  with:
+    registry: REGION-docker.pkg.dev
+    username: oauth2accesstoken
+    password: ${{ steps.auth.outputs.access_token }}
+```
+
+のように `docker/login-action` を使わずともよくなったかなと思います。
+
+## まとめ
+
+まとめると
+
+- プールはプロバイダをまとめる器, サービスや環境単位で切る
+- プロバイダは IdP 的な意味で解釈してよさそう、ただし condition 使うなら分けろ
+- `actions/checkout@v3` を手前にもってこい
+- artifact registry に age るなら `docker/login-action@v1` は不要
 
 ## refs
 
+- cloud blog in Japanese( マジの概要なので、ここから掘り下げる必要があるとは思います ): https://cloud.google.com/blog/ja/products/identity-security/enabling-keyless-authentication-from-github-actions
 - コンポーネントの概要( プール, プロバイダー, とはなんぞやっての )を学ぶにはいい: https://cloud.google.com/iam/docs/workload-identity-federation?hl=ja
+- 設定の例: https://cloud.google.com/iam/docs/configuring-workload-identity-federation?hl=ja#gcloud
+- 属性情報のマッピング: https://cloud.google.com/iam/docs/configuring-workload-identity-federation?hl=ja#mappings-and-conditions
 - CEL で使える比較演算子の仕様: https://github.com/google/cel-spec/blob/master/doc/langdef.md#list-of-standard-definitions
+- 忘れるなよ: https://github.com/google-github-actions/auth#prerequisites
