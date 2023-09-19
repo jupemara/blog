@@ -2,7 +2,7 @@
 slug: cloud-run-logging
 title: Cloud Run の Logging って結局どうなってんの??
 publishedAt: '2023-09-19T10:54:43.000+09:00'
-updatedAt: '2023-09-19T10:54:43.000+09:00'
+updatedAt: '2023-09-19T19:52:27.000+09:00'
 tags: [GCP, 'Cloud Run', 'Cloud Logging']
 ---
 
@@ -132,6 +132,52 @@ console.log(
   - custom metrics として Cloud Monitoring に export してあげる方が使い勝手いいかも??
     - ここはもうちょっと使い込んで検証が必要やね
 
+## 追記: Error Reporting に console.log から送る方法あるんか
+
+調べ終わって, "っさ, 実装するやで" って思った矢先, Error Reporting に対してなんらかの id や label を指定したいときあるやんって思ったので, 試してく.
+[https://cloud.google.com/error-reporting/docs/formatting-error-messages](https://cloud.google.com/error-reporting/docs/formatting-error-messages) によると
+
+```
+message、stack_trace、exception フィールドを含む jsonPayload。
+これらのフィールドは複数指定できます。これらのフィールドが複数指定されている場合、評価は stack_trace、exception、message の順で行われます。
+```
+
+だそうなので,
+
+```javascript
+console.log(
+  JSON.stringify({
+    severity: 'INFO',
+    stack_trace: new Error(`error report??`).stack,
+    payloadLength: randomInt(0, 10),
+    component: 'error-reporting-app',
+    user_id: 'test-user-001',
+  }),
+);
+```
+
+`stack_trace` フィールドを jsonPaylod に含められるように吐き出してみました. しかしこちらは予想に反して失敗.
+severity を `ERROR` に設定してみる
+
+```javascript
+console.log(
+  JSON.stringify({
+    severity: 'ERROR',
+    stack_trace: new Error(`error report??`).stack,
+    payloadLength: randomInt(0, 10),
+    component: 'error-reporting-app',
+    user_id: 'test-user-001',
+  }),
+);
+```
+
+無事成功.
+
+![error reporting with console.log](./error-reporting-with-consolelog.png)
+
+っというわけなので, jsonPayload に `stack_trace` , `exception` , `message` としてスタックトレースを `severity: 'ERROR'` とともに標準出力に吐き出せば OK っということがわかりましたとさ.
+
 ## 参考リンク s
 
 - https://cloud.google.com/run/docs/logging#writing_structured_logs
+- https://cloud.google.com/error-reporting/docs/formatting-error-messages
