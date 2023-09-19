@@ -1,6 +1,6 @@
 ---
 slug: cloud-run-logging
-title: cloud run の logging って結局どうなってんの??
+title: Cloud Run の Logging って結局どうなってんの??
 publishedAt: '2023-09-19T10:54:43.000+09:00'
 updatedAt: '2023-09-19T10:54:43.000+09:00'
 tags: [GCP, 'Cloud Run', 'Cloud Logging']
@@ -50,11 +50,9 @@ console.log(new Error(`use "console.log"`));
 console.error(new Error(`use "console.error"`));
 ```
 
-正直コレはわかってはいましたが, `console.log` で投げようが, `console.error` で投げようが, Exception を直接投げつけると Error Reporting に乗る
+ﾊｲ, `console.log` で投げようが, `console.error` で投げようが, Exception を直接投げつけると Error Reporting に乗る
 
 ![using console.log and console.error to display stacktraces](./use-console-log-with-exception.png)
-
----
 
 次, 公式に従って
 
@@ -73,7 +71,7 @@ console.log(
 ![using structured logging following public docs](./structured-as-json-payload.png)
 severity が warn でテキストメッセージっぽい感じで改行を入れつつええ感じになってるぽ
 
-こちらが元のやつ
+↓ が元のやつ
 ![directly logging exception](./error-report-as-text-payload.png)
 
 この形式で吐き出すと Error Report には出なくなるので, 今すぐ対応が必要なエラーじゃないけど stacktrace はほしいみたいな例には対応できそう.
@@ -130,8 +128,8 @@ console.log(
 ## 感想 (とまとめ)
 
 - stacktrace は文字列として `jsonPayload.message` に入れるとログのタイトルにもなるし, まぁまぁわかりやすいし, 任意の severity も付与できる
-- Log based metrics は数値として吐き出す必要があるので, 若干ｎ使い勝手に何ありか??
-  - custom metrics として Cloud Monitoring に export してあげる方が使い勝手ｍいいかも??
+- Log based metrics は数値として吐き出す必要があるので, 若干使い勝手に何ありか??
+  - custom metrics として Cloud Monitoring に export してあげる方が使い勝手いいかも??
     - ここはもうちょっと使い込んで検証が必要やね
 
 ## 参考リンク s
