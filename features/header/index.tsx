@@ -7,7 +7,10 @@ export const Header = (): JSX.Element => {
     <>
       <header>
         <div className={styles['title-outer']}>
-          <span className={styles['space-tunnel']}></span>
+          <a
+            href="https://kbd.arashike.com"
+            className={styles['space-tunnel']}
+          ></a>
           <span className={styles.title}>
             <BorderPlaneWithMother2Font>
               <Link href="/">
@@ -15,9 +18,7 @@ export const Header = (): JSX.Element => {
               </Link>
             </BorderPlaneWithMother2Font>
           </span>
-          <Link href="/kb">
-            <a className={styles.warp}></a>
-          </Link>
+          <a href="https://kbd.arashike.com" className={styles.warp}></a>
         </div>
         <div className={styles['header-bottom']}></div>
       </header>
